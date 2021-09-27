@@ -11,22 +11,9 @@ package ca.com.felipeoliveira.model;
  */
 public class CompteHypothecaire extends Compte{
     
-     private double solde = 0;
-    
     public CompteHypothecaire(String numero, String codeTitulaire){
         super(numero, codeTitulaire, 3);
-    
-    
     }
-    
-    public void setSolde(double solde){
-        this.solde = solde;
-    }
-    
-    public double getSolde(){
-        return this.solde;
-    }
-    
     public boolean depot(double montant){
         boolean depotReussit = true;
         

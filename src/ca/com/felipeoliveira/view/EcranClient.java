@@ -7,15 +7,19 @@ package ca.com.felipeoliveira.view;
 
 import ca.com.felipeoliveira.model.*;
 import ca.com.felipeoliveira.viewmodel.ConnexionSQLite;
+import ca.com.felipeoliveira.viewmodel.GererBD;
 import java.lang.StringBuilder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JTextField;
 
 /**
  *
@@ -32,12 +36,19 @@ public class EcranClient extends javax.swing.JFrame {
     int CLAVIER_NUMERIQUE_TRANSFERT = 2;
     int CLAVIER_NUMERIQUE_PAIEMENT = 3;
     
+    int TRANSACTION_DEPOT = 1;
+    int TRANSACTION_RETRAIT = 2;
+    int TRANSACTION_TRANSFERT = 3;
+    int TRANSACTION_PAIEMENT = 4;
+    
     List<CompteCheque> cheques = new ArrayList();
     List<CompteEpargne> epargnes = new ArrayList();
     List<CompteHypothecaire> hypothecaires = new ArrayList();
     MargeDeCredit margeCredit;
     
+    
     ConnexionSQLite connexion = new ConnexionSQLite();
+    GererBD gererBD = new GererBD(connexion); 
     Statement statement = null;
     ResultSet resultSet = null;
     
@@ -263,7 +274,12 @@ public class EcranClient extends javax.swing.JFrame {
         lblBoxDepot.setText("Dépôt");
 
         txtDepot.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txtDepot.setText(".0");
+        txtDepot.setText("$00.0");
+        txtDepot.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDepotActionPerformed(evt);
+            }
+        });
 
         lblCompteDestin1.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         lblCompteDestin1.setForeground(new java.awt.Color(110, 110, 110));
@@ -348,7 +364,7 @@ public class EcranClient extends javax.swing.JFrame {
         lblBoxDepot1.setText("Retrait");
 
         txtRetrait.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txtRetrait.setText(".0");
+        txtRetrait.setText("$00.0");
         txtRetrait.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtRetraitActionPerformed(evt);
@@ -445,10 +461,17 @@ public class EcranClient extends javax.swing.JFrame {
         lblCompteDestin.setForeground(new java.awt.Color(110, 110, 110));
         lblCompteDestin.setText("Compte destin");
 
+        cbTransfertCompteDestin.setMinimumSize(new java.awt.Dimension(52, 47));
+
         btnTransferer.setText("TRANSFERER");
+        btnTransferer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTransfertActionPerfomed(evt);
+            }
+        });
 
         txtTransfert.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txtTransfert.setText(".0");
+        txtTransfert.setText("$00.0");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -457,45 +480,50 @@ public class EcranClient extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(97, 97, 97)
-                        .addComponent(lblBoxTransfert))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(80, 80, 80)
-                        .addComponent(lblCompteSource))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(80, 80, 80)
-                        .addComponent(lblCompteDestin))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(33, 33, 33)
+                        .addComponent(txtTransfert, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(80, 80, 80)
+                        .addComponent(cbTransfertCompteDestin, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(80, 80, 80)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbTransfertCompteDestin, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbTransfertCompteSource, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(txtTransfert, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(57, 57, 57)
-                        .addComponent(btnTransferer, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(18, Short.MAX_VALUE))
+                            .addComponent(cbTransfertCompteSource, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(65, 65, 65)
+                                .addComponent(lblBoxTransfert)))))
+                .addContainerGap(43, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btnTransferer, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(125, 125, 125)
+                .addComponent(lblCompteDestin)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(133, 133, 133)
+                .addComponent(lblCompteSource)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblBoxTransfert)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(37, 37, 37)
                 .addComponent(lblCompteSource)
-                .addGap(2, 2, 2)
+                .addGap(18, 18, 18)
                 .addComponent(cbTransfertCompteSource, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addComponent(lblCompteDestin)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cbTransfertCompteDestin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtTransfert, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addComponent(cbTransfertCompteDestin, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49)
+                .addComponent(txtTransfert, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36)
                 .addComponent(btnTransferer, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addGap(23, 23, 23))
         );
 
         javax.swing.GroupLayout tabTransfertLayout = new javax.swing.GroupLayout(tabTransfert);
@@ -503,16 +531,16 @@ public class EcranClient extends javax.swing.JFrame {
         tabTransfertLayout.setHorizontalGroup(
             tabTransfertLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tabTransfertLayout.createSequentialGroup()
-                .addGap(95, 95, 95)
+                .addGap(49, 49, 49)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(105, Short.MAX_VALUE))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
         tabTransfertLayout.setVerticalGroup(
             tabTransfertLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tabTransfertLayout.createSequentialGroup()
-                .addGap(101, 101, 101)
+                .addGap(40, 40, 40)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(143, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("TRANSFERT", tabTransfert);
@@ -527,7 +555,7 @@ public class EcranClient extends javax.swing.JFrame {
         jLabel2.setText("Montant à payer");
 
         txtPaiement.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txtPaiement.setText(".0");
+        txtPaiement.setText("$00.0");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -619,87 +647,255 @@ public class EcranClient extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDepotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDepotActionPerformed
-        // TODO add your handling code here:
+        //On recupère la valeur saisi
+        String valeurSaisi = txtDepot.getText().replace("$", "").replace(",", "");
+        double valeur = Double.parseDouble(valeurSaisi);
+        int indexCompte = 0;
+        //On recupere la compre destin
+        String compteDestin = cbDepotCompteDestin.getSelectedItem().toString();
+        //On identifie le type de la compte et le numero
+        String[] compteChoisi = compteDestin.split(" ");
+        String numeroCompteDestin = compteChoisi[1];
+        String compteType = compteChoisi[0];
+    
+        if(compteType.equals("Cheque")){
+            System.out.println("Depot ok 1");
+            indexCompte = getIndexComptesCheques(numeroCompteDestin, cheques);
+            //On effectue le depot dans la compte cheque
+            boolean succces = cheques.get(indexCompte).depot(valeur);
+            if(succces){
+                double solde = cheques.get(indexCompte).getSolde();
+                gererBD.enregistrerSolde(numeroCompteDestin, solde);
+                //On enregistre la transaction
+                gererBD.enregistrerTransaction(TRANSACTION_DEPOT, "", numeroCompteDestin, valeur);
+                //On met à jour le ComboBox
+                mettreAJourCB();
+                System.out.println("Depot succes");
+            }
+        }
+        else if(compteType.equals("Épargne") ){
+            indexCompte = getIndexComptesEpargnes(numeroCompteDestin, epargnes);
+            //On effectue le depot dans la compte cheque
+            boolean succces = epargnes.get(indexCompte).depot(valeur);
+            if(succces){
+                double solde = epargnes.get(indexCompte).getSolde();
+                gererBD.enregistrerSolde(numeroCompteDestin, solde);
+                //On enregistre la transaction
+                gererBD.enregistrerTransaction(TRANSACTION_DEPOT, "", numeroCompteDestin, valeur);
+                //On met à jour le ComboBox
+                mettreAJourCB();
+                System.out.println("Depot succes");
+            }
+        }
+        else if(compteType.equals("Hypothecaire")){
+            indexCompte = getIndexComptesHypothecaire(numeroCompteDestin, hypothecaires);
+            //On effectue le depot dans la compte cheque
+            boolean succces = hypothecaires.get(indexCompte).depot(valeur);
+            if(succces){
+                double solde = hypothecaires.get(indexCompte).getSolde();
+                gererBD.enregistrerSolde(numeroCompteDestin, solde);
+                //On enregistre la transaction
+                gererBD.enregistrerTransaction(TRANSACTION_DEPOT, "", numeroCompteDestin, valeur);
+                //On met à jour le ComboBox
+                mettreAJourCB();
+                System.out.println("Depot succes");
+            }
+        }
+        
+        
     }//GEN-LAST:event_btnDepotActionPerformed
-
+    private int getIndexComptesCheques(String numeroCompte, List<CompteCheque>comptes){
+         int numero = 0;
+        for(int i = 0; i < comptes.size(); i++){
+            if(numeroCompte.equals(comptes.get(i).getNumero())){
+                numero = i;
+            }
+        }
+        return numero;
+    }
+    
+    private int getIndexComptesEpargnes(String numeroCompte, List<CompteEpargne>comptes){
+         int numero = 0;
+        for(int i = 0; i < comptes.size(); i++){
+            if(numeroCompte.equals(comptes.get(i).getNumero())){
+                numero = i;
+            }
+        }
+        return numero;
+    }
+    
+    private int getIndexComptesHypothecaire(String numeroCompte, List<CompteHypothecaire>comptes){
+         int numero = 0;
+        for(int i = 0; i < comptes.size(); i++){
+            if(numeroCompte.equals(comptes.get(i).getNumero())){
+                numero = i;
+            }
+        }
+        return numero;
+    }
     private void btnRetraitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetraitActionPerformed
-        // TODO add your handling code here:
+        //On recupère la valeur saisi
+        String valeurSaisi = txtRetrait.getText().replace("$", "").replace(",", "");
+        double valeur = Double.parseDouble(valeurSaisi);
+        boolean multipleDeDix = (valeur % 10 == 0);
+        int indexCompte = 0;
+        
+        if(multipleDeDix || valeur <= 1000){
+            //On recupere la compte source
+            String compteSource = cbRetraitCompteSource.getSelectedItem().toString();
+            //On identifie le type de la compte et le numero
+            String[] compteChoisi = compteSource.split(" ");
+            String numeroCompteSource = compteChoisi[1];
+            String compteType = compteChoisi[0];
+
+            if(compteType.equals("Cheque")){
+                System.out.println("Depot ok 1");
+                indexCompte = getIndexComptesCheques(numeroCompteSource, cheques);
+                //On effectue le depot dans la compte cheque
+                boolean succces = cheques.get(indexCompte).retrait(valeur);
+                if(succces){
+                    double solde = cheques.get(indexCompte).getSolde();
+                    gererBD.enregistrerSolde(numeroCompteSource, solde);
+                    //On enregistre la transaction
+                    gererBD.enregistrerTransaction(TRANSACTION_RETRAIT, numeroCompteSource, "", valeur);
+                    //On met à jour le ComboBox
+                    mettreAJourCB();
+                    System.out.println("Retrait succes");
+                }
+            }
+            else if(compteType.equals("Épargne") ){
+                indexCompte = getIndexComptesEpargnes(numeroCompteSource, epargnes);
+                //On effectue le depot dans la compte cheque
+                boolean succces = epargnes.get(indexCompte).retrait(valeur);
+                if(succces){
+                    double solde = epargnes.get(indexCompte).getSolde();
+                    gererBD.enregistrerSolde(numeroCompteSource, solde);
+                    //On enregistre la transaction
+                    gererBD.enregistrerTransaction(TRANSACTION_RETRAIT, numeroCompteSource , "" , valeur);
+                    //On met à jour le ComboBox
+                    mettreAJourCB();
+                    System.out.println("Retrait succes");
+                }
+            }
+        }
+        else{
+            //TODO si nao é multiplo de 10
+        }
+        
+        
+        
+                
     }//GEN-LAST:event_btnRetraitActionPerformed
 
     private void clavierNumeriqueClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clavierNumeriqueClick
         //On recupère la tab selectionnée
         clavierNumeriqueDestin = jTabbedPane1.getSelectedIndex();
+        //On recupère le numero cliqué
+        String btnClique = evt.getActionCommand();
+    
         //SI l'utilisateur clique sur le tabDepot on processe le clavier numerique dans le champs
         if(clavierNumeriqueDestin == CLAVIER_NUMERIQUE_DEPOT){
-            //On recupère le numero cliqué
-            String btnClique = evt.getActionCommand();
-            //On recupere la valeur du txtDepot plus le numero choisi
-            String txtDepotSaisie = txtDepot.getText().replace(".","") + btnClique;
-            //On retire les dernies 6 caractères.
-            double valeurDepot = Double.parseDouble(txtDepotSaisie);
-            if(valeurDepot > 100){
-               txtDepotSaisie = txtDepotSaisie.replaceFirst("^0+(?!$)", "");
-            }
-            String txtAAfficher = new StringBuilder(txtDepotSaisie).insert(txtDepotSaisie.length()-2, ".").toString();
-            //On affiche à l'ecran
-            txtDepot.setText(txtAAfficher);
+            //On recupère la valeur du champs TextField
+            String valeurChampTxtDepot =  txtDepot.getText();
+            //On fait appel à la methode pour mettre à jour le TxtField
+            mettreAJourTxtField(txtDepot, btnClique, valeurChampTxtDepot);
         }
         else if(clavierNumeriqueDestin == CLAVIER_NUMERIQUE_RETRAIT){
-            //On recupère le numero cliqué
-            String btnClique = evt.getActionCommand();
-            //On recupere la valeur du txtCodeClient plus le numero choisi
-            String txtRetraitSaisi = txtRetrait.getText().replace(".","") + btnClique;
-            //On retire les dernies 6 caractères.
-            double transfertValeur = Double.parseDouble(txtRetraitSaisi);
-            if(transfertValeur > 100){
-               txtRetraitSaisi = txtRetraitSaisi.replaceFirst("^0+(?!$)", "");
-            }
-            String txtAAfficher = new StringBuilder(txtRetraitSaisi).insert(txtRetraitSaisi.length()-2, ".").toString();
-            //On affiche à l'ecran
-            txtRetrait.setText(txtAAfficher);
+            //On recupère la valeur du champs TextField
+            String valeurChampTxtRetrait =  txtRetrait.getText();
+            //On fait appel à la methode pour mettre à jour le TxtField
+            mettreAJourTxtField(txtRetrait, btnClique, valeurChampTxtRetrait);
         }
         else if(clavierNumeriqueDestin == CLAVIER_NUMERIQUE_TRANSFERT){
-            //On recupère le numero cliqué
-            String btnClique = evt.getActionCommand();
-            //On recupere la valeur du txtCodeClient plus le numero choisi
-            String txtTransfertSaisi = txtTransfert.getText().replace(".","") + btnClique;
-            //On retire les dernies 6 caractères.
-            double transfertValeur = Double.parseDouble(txtTransfertSaisi);
-            if(transfertValeur > 100){
-               txtTransfertSaisi = txtTransfertSaisi.replaceFirst("^0+(?!$)", "");
-            }
-            String txtAAfficher = new StringBuilder(txtTransfertSaisi).insert(txtTransfertSaisi.length()-2, ".").toString();
-            //On affiche à l'ecran
-            txtTransfert.setText(txtAAfficher);
+            //On recupère la valeur du champs TextField
+            String valeurChampTxtTransfert =  txtTransfert.getText();
+            //On fait appel à la methode pour mettre à jour le TxtField
+            mettreAJourTxtField(txtTransfert, btnClique, valeurChampTxtTransfert);
         }
         else if(clavierNumeriqueDestin == CLAVIER_NUMERIQUE_PAIEMENT){
-            //On recupère le numero cliqué
-            String btnClique = evt.getActionCommand();
-            //On recupere la valeur du txtCodeClient plus le numero choisi
-            String txtPaiementSaisi = txtPaiement.getText().replace(".","") + btnClique;
-            //On retire les dernies 6 caractères.
-            double transfertValeur = Double.parseDouble(txtPaiementSaisi);
-            if(transfertValeur > 100){
-               txtPaiementSaisi = txtPaiementSaisi.replaceFirst("^0+(?!$)", "");
-            }
-            String txtAAfficher = new StringBuilder(txtPaiementSaisi).insert(txtPaiementSaisi.length()-2, ".").toString();
-            //On affiche à l'ecran
-            txtPaiement.setText(txtAAfficher);
+            //On recupère la valeur du champs TextField
+            String valeurChampTxtPaiement =  txtPaiement.getText();
+            //On fait appel à la methode pour mettre à jour le TxtField
+            mettreAJourTxtField(txtPaiement, btnClique, valeurChampTxtPaiement);
         }
         
     }//GEN-LAST:event_clavierNumeriqueClick
 
     private void txtRetraitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRetraitActionPerformed
-        // TODO add your handling code here:
+    
+        
     }//GEN-LAST:event_txtRetraitActionPerformed
 
     private void clearEntryClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearEntryClick
-        txtDepot.setText(".0");
-        txtRetrait.setText(".0");
-        txtTransfert.setText(".0");
-        txtPaiement.setText(".0");
+        remetreTxtField();
     }//GEN-LAST:event_clearEntryClick
+    private void remetreTxtField(){
+        txtDepot.setText("$00.0");
+        txtRetrait.setText("$00.0");
+        txtTransfert.setText("$00.0");
+        txtPaiement.setText("$00.0");
+    }
+    private void txtDepotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDepotActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDepotActionPerformed
 
+    private void btnTransfertActionPerfomed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransfertActionPerfomed
+        //On recupère la valeur saisi
+        String valeurSaisi = txtTransfert.getText().replace("$", "").replace(",", "");
+        double valeur = Double.parseDouble(valeurSaisi);
+        
+        int indexCompte = 0;
+        
+        
+            //On recupere la compte source et compte destin
+            String compteSource = cbTransfertCompteSource.getSelectedItem().toString();
+            String compteDestin = cbTransfertCompteDestin.getSelectedItem().toString();
+            
+            //On identifie le type de la compte et le numero
+            //Compte source
+            String[] compteSourceChoisi = compteSource.split(" ");
+            String numeroCompteSource = compteSourceChoisi[1];
+            String compteSourceType = compteSourceChoisi[0];
+            //CompteDestin
+            String[] compteDestinChoisi = compteDestin.split(" ");
+            String numeroCompteDestin = compteDestinChoisi[1];
+            String compteDestinType = compteDestinChoisi[0];
+
+            if(compteSourceType.equals("Cheque")){
+                System.out.println("Depot ok 1");
+                indexCompte = getIndexComptesCheques(numeroCompteSource, cheques);
+                
+                //On effectue le depot dans la compte cheque
+                boolean succces = cheques.get(indexCompte).retrait(valeur);
+                if(succces){
+                    double solde = cheques.get(indexCompte).getSolde();
+                    gererBD.enregistrerSolde(numeroCompteSource, solde);
+                    //On enregistre la transaction
+                    gererBD.enregistrerTransaction(TRANSACTION_RETRAIT, numeroCompteSource, "", valeur);
+                    //On met à jour le ComboBox
+                    mettreAJourCB();
+                    System.out.println("Retrait succes");
+                }
+            }
+            else if(compteSourceType.equals("Épargne") ){
+                indexCompte = getIndexComptesEpargnes(numeroCompteSource, epargnes);
+                //On effectue le depot dans la compte cheque
+                boolean succces = epargnes.get(indexCompte).retrait(valeur);
+                if(succces){
+                    double solde = epargnes.get(indexCompte).getSolde();
+                    gererBD.enregistrerSolde(numeroCompteSource, solde);
+                    //On enregistre la transaction
+                    gererBD.enregistrerTransaction(TRANSACTION_RETRAIT, numeroCompteSource , "" , valeur);
+                    //On met à jour le ComboBox
+                    mettreAJourCB();
+                    System.out.println("Retrait succes");
+                }
+            }
+       
+        
+    }//GEN-LAST:event_btnTransfertActionPerfomed
+
+  
     /**
      * @param args the command line arguments
      */
@@ -785,6 +981,13 @@ public class EcranClient extends javax.swing.JFrame {
          connexion.deconnecter();
         }
     }
+    
+    private void mettreAJourCB(){
+        //On met à jour tous les ComboBox
+        remplirCbTransfert();
+        remplirCbDepot();
+        remplirCbRetrait();
+    }
     private void remplirCbTransfert(){
         //On vide le CB
         cbTransfertCompteSource.removeAllItems();
@@ -867,6 +1070,19 @@ public class EcranClient extends javax.swing.JFrame {
             //On ajoute l'item au CB
             cb.addItem(cbItem);
         }
+    }
+    
+        private void mettreAJourTxtField(JTextField textField, String numeroSaisi, String txtDepotSaisie){
+        //On enleve le caractère special du NumberFormat
+        txtDepotSaisie = txtDepotSaisie.replace("$", "").replace(".", "").replace(",", "") + numeroSaisi;
+        String txtRemetrePoint = new StringBuilder(txtDepotSaisie).insert(txtDepotSaisie.length()-2, ".").toString();
+        double numeroAAficher = Double.parseDouble(txtRemetrePoint);
+        //On utilise le NumberFormat pour afficher la valeur en dolar
+        Locale locale = new Locale("en", "US");
+        NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
+        //On remet la valeur dans le textField
+        textField.setText(fmt.format(numeroAAficher));
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

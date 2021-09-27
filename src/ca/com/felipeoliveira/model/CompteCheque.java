@@ -11,22 +11,12 @@ package ca.com.felipeoliveira.model;
  */
 public class CompteCheque extends Compte{
     
-    private double solde = 0;
-    
     
     public CompteCheque(String numero, String codeTitulaire){
         super(numero, codeTitulaire, 1);
     }
     
     //Getters and setters
-    public double getSolde(){
-        return this.solde;
-    }
-    
-    public void setSolde(double solde){
-        this.solde = solde;
-    }
-    
     public boolean depot(double montant){
         boolean depotReussit = true;
         
@@ -38,4 +28,12 @@ public class CompteCheque extends Compte{
         return depotReussit;
     }
     
+    public boolean retrait(double valeur){
+        boolean succes = true;
+        if(valeur - this.solde < 0){
+            this.solde -= valeur; 
+        }
+        
+        return succes;
+    }
 }

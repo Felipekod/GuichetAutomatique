@@ -11,20 +11,12 @@ package ca.com.felipeoliveira.model;
  */
 public class CompteEpargne extends Compte {
     
-    private double solde = 0;
+    //private double solde = 0;
     
     public CompteEpargne(String numero, String codeTitulaire){
         super(numero, codeTitulaire, 2);
     
     
-    }
-    
-        public double getSolde(){
-        return this.solde;
-    }
-    
-      public void setSolde(double solde){
-        this.solde = solde;
     }
     
     public boolean depot(double montant){
@@ -36,5 +28,14 @@ public class CompteEpargne extends Compte {
                 depotReussit = false;
             
         return depotReussit;
+    }
+    
+    public boolean retrait(double valeur){
+        boolean succes = true;
+        if(valeur - this.solde < 0){
+            this.solde -= valeur; 
+        }
+        
+        return succes;
     }
 }

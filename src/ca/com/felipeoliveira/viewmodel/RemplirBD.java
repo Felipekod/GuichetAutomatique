@@ -312,7 +312,8 @@ public class RemplirBD {
             }// ---
                  return reussite;
         }
-        
+    
+       
         private int randomSolde(int min, int max) {
 		int range = (max - min) + 1;
 		return (int)(Math.random() * range) + min;

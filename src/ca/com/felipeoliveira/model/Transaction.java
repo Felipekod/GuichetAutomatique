@@ -15,10 +15,28 @@ public class Transaction {
     private int transactionType;
     private String compteSource;
     private String compteDestin;
+    double valeur;
+    int id;
     
-    public Transaction(int transactionType, String compteSource, String CompteDestin){
-        
+    public Transaction(int transactionType, String compteSource, String compteDestin, double valeur){
+        this.transactionType = transactionType;
+        this.compteSource = compteSource;
+        this.compteDestin = compteDestin;
+        this.valeur = valeur;
     }
-            
+    
+    public int getTransactionType(){
+        return this.transactionType;
+    }
+    public String getCompteSource(){
+        return this.compteSource;
+    }
+    public String getCompteDestin(){
+        return this.compteDestin;
+    }
+    public double getValeur(){
+        return this.valeur;
+    }
+    
             
 }

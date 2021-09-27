@@ -20,6 +20,7 @@ public abstract class Compte {
     private String codeTitulaire;
     private static int total = 0;
     private int compteType;
+    protected double solde = 0;
     
     
     public Compte(String numero, String codeTitulaire, int compteType){
@@ -39,6 +40,14 @@ public abstract class Compte {
     
     public String getCodeTitulaire(){
         return this.codeTitulaire;
+    }
+    
+       public double getSolde(){
+        return this.solde;
+    }
+    
+    public void setSolde(double solde){
+        this.solde = solde;
     }
     
     
