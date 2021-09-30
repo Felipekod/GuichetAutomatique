@@ -32,8 +32,11 @@ public class CompteEpargne extends Compte {
     
     public boolean retrait(double valeur){
         boolean succes = true;
-        if(valeur - this.solde < 0){
+        if(valeur - this.solde <= 0){
             this.solde -= valeur; 
+        }
+        else{
+            succes = false;
         }
         
         return succes;

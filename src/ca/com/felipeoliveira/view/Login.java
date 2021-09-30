@@ -368,6 +368,14 @@ public class Login extends javax.swing.JFrame {
         codeClientSaisi = txtCodeClient1.getText();
         nipSaisi = txtNIPClient.getText() ;
         
+        boolean admin = (nipSaisi.equals("admin")&& codeClientSaisi.equals("admin"));
+        if(admin){
+            //On initialise l'ecranAdmin
+            EcranAdmin ecranAdmin = new EcranAdmin();
+            ecranAdmin.setVisible(true);
+            this.setVisible(false);
+        }
+        else{
         String query = "SELECT * FROM tbl_clients WHERE codeClient = '" + codeClientSaisi + "';";
         
         connexion.connect();
@@ -407,8 +415,7 @@ public class Login extends javax.swing.JFrame {
         finally{
          connexion.deconnecter();
         }
-                
-                
+        }         
     }//GEN-LAST:event_btnOkActionPerformed
 
     /**

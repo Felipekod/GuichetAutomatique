@@ -11,19 +11,20 @@ package ca.com.felipeoliveira.viewmodel;
  */
 public class Guichet {
     private double solde = 0;
+    private int limite = 20000;
     
     public double getSolde(){
         return this.solde;
     }
     
     public boolean setSoldePlus5k(){
-        if(this.solde >= 20000){
+        if(this.solde >= limite){
             return false;
         }
         else{
             double nvSolde = this.solde + 5000 ;
            
-            if(nvSolde >= 20000) this.solde = 20000;
+            if(nvSolde >= limite) this.solde = 20000;
             else this.solde = nvSolde;
             
             return true;

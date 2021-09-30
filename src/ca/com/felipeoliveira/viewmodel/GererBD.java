@@ -6,12 +6,19 @@
 package ca.com.felipeoliveira.viewmodel;
 
 
+import ca.com.felipeoliveira.model.Client;
+import ca.com.felipeoliveira.model.Compte;
+import ca.com.felipeoliveira.model.CompteCheque;
 import ca.com.felipeoliveira.model.Transaction;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 
 /**
  *
@@ -20,11 +27,13 @@ import java.util.Date;
 public class GererBD {
     
     private final ConnexionSQLite connexion;
+    Statement statement = null;
+    ResultSet resultSet = null;
     
     public GererBD(ConnexionSQLite connexion){
         this.connexion = connexion;
     }
-    
+//Methodes CREATE
     public void creerTableClient(){
         String sql = "CREATE TABLE IF NOT EXISTS tbl_clients(codeClient text PRIMARY KEY NOT NULL, nom text NOT NULL, prenom text NOT NULL, telephone text NOT NULL, nip text NOT NULL, essaieLogin integer)";
         
@@ -47,7 +56,7 @@ public class GererBD {
         }
     }
     
-        public void creerTableComptes(){
+    public void creerTableComptes(){
         String sql = "CREATE TABLE IF NOT EXISTS tbl_comptes(type int, numero text PRIMARY KEY, codeTitulaire text, solde real, limite real)";
         
         //boolean pour verifier le succes dans la connexion 
@@ -92,6 +101,7 @@ public class GererBD {
         }
     }
     
+//Methodes UPDATE
     public boolean enregistrerSolde(String numeroCompte, double solde){
         boolean succes = true;
         boolean connecter = false;
@@ -111,7 +121,61 @@ public class GererBD {
         return succes;
     }
         
-     public boolean enregistrerTransaction(int type, String compteSource, String compteDestin, double valeur){
+// Methodes INSERT
+    public boolean insererMargeCredit(String codeTitulaire){
+        boolean succes = true;
+        
+        return succes;
+    }
+    
+    public boolean insererCompteHypothecaire(String codeTitulaire){
+        boolean succes = true;
+        
+        return succes;
+    }
+    
+    public boolean insererCompteEparne(String codeTitulaire){
+        boolean succes = true;
+        
+        return succes;
+    }
+      
+    public boolean insererCompteCheque(String codeTitulaire, int type){
+        boolean succes = true;
+        String numeroCompte = recupererNumeroCompte();
+        Compte compte = new CompteCheque(numeroCompte, codeTitulaire);
+        double limite = 0;
+          
+          try{
+              connexion.connect();
+              String sql = "INSERT INTO tbl_comptes (type, numero, codeTitulaire, solde, limite) VALUES(?,?,?,?,?);";
+              //On cree le preparedStatement
+               PreparedStatement preparedStatement = connexion.preparedStatement(sql);
+               preparedStatement.setInt(1,compte.getType());
+               preparedStatement.setString(2,compte.getNumero());
+               preparedStatement.setString(3,compte.getCodeTitulaire());
+               preparedStatement.setDouble(4,compte.getSolde());
+               preparedStatement.setDouble(5,limite);
+               
+               int result = preparedStatement.executeUpdate();
+
+                if(result == 1){
+                    System.out.println("Insert compteCheque ok");
+                }
+                else{
+                    System.out.println("Insert fail");
+                    succes = false;
+                }
+              
+          }catch(SQLException e){
+              e.printStackTrace();
+          }finally{
+              connexion.deconnecter();
+          }
+        return succes;
+    }
+    
+    public boolean insererTransaction(int type, String compteSource, String compteDestin, double valeur){
             boolean succes = true;
             boolean connecter = false;
             //On cree la trnasaction
@@ -156,9 +220,149 @@ public class GererBD {
             }
             return succes;
         }
-        
-     
-      
+    
+    public boolean insererClient(String codeClient, String nom, String prenom, String telephone, String nip){
+          boolean succes = true;
+          //On cree le client
+          Client client = new Client(codeClient, nom, prenom, telephone, nip);
+          
+          try{
+              connexion.connect();
+              String sql = "INSERT INTO tbl_clients (codeClient, nom, prenom, telephone, nip) VALUES(?,?,?,?,?);";
+              //On cree le preparedStatement
+               PreparedStatement preparedStatement = connexion.preparedStatement(sql);
+               preparedStatement.setString(1,client.getCodeClient());
+               preparedStatement.setString(2,client.getNom());
+               preparedStatement.setString(3,client.getPrenom());
+               preparedStatement.setString(4,client.getTelephone());
+               preparedStatement.setString(5,client.getNIP());
+               
+               int result = preparedStatement.executeUpdate();
 
+                if(result == 1){
+                    System.out.println("Insert ok");
+                }
+                else{
+                    System.out.println("Insert fail");
+                    succes = false;
+                }
+              
+          }catch(SQLException e){
+              e.printStackTrace();
+          }finally{
+              connexion.deconnecter();
+          }
+          
+          return succes;
+      }
+    
+//Methodes SELECT
+    public Client retournerClient(String codeClient){
+        
+           //On ouvre la connexion sql
+           connexion.connect();
+           statement = connexion.statement();
+           String sql = "SELECT * FROM tbl_clients WHERE codeClient = '" + codeClient + "';";
+           Client client = null;
+           try{
+               resultSet = statement.executeQuery(sql);
+               while(resultSet.next()){
+                   String nom = resultSet.getString("nom");
+                   String prenom = resultSet.getString("prenom");
+                   String telephone = resultSet.getString("telephone");
+                   String nip = resultSet.getString("nip");
+                   int essaieLogin = resultSet.getInt("essaieLogin");
+                   client = new Client(codeClient, nom, prenom, telephone, nip, essaieLogin);
+               }
+               
+           }catch(SQLException e){
+               e.printStackTrace();
+           }
+           finally{
+               connexion.deconnecter();
+           }
+           
+           return client;
+    }
+    
+    public List<Transaction> retournerTransactions(String codeClient){
+        String sql = "SELECT numero_transaction, transaction_type,  compte_source, compte_destin, valeur,  quand FROM tbl_clients INNER JOIN tbl_comptes ON tbl_clients.codeClient = tbl_comptes.codeTitulaire AND tbl_comptes.codeTitulaire = '" + codeClient + "' INNER JOIN tbl_transaction ON tbl_comptes.numero = tbl_transaction.compte_destin OR tbl_comptes.numero = tbl_transaction.compte_source;";
+        
+        List<Transaction> transactions  = new ArrayList();
+        
+        //On ouvre la connexion sql
+           connexion.connect();
+           statement = connexion.statement();
+        try{
+               resultSet = statement.executeQuery(sql);
+               while(resultSet.next()){
+                   int numeroTransaction = resultSet.getInt("numero_transaction");
+                   int typeTransaction = resultSet.getInt("transaction_type");
+                   String compteSource = resultSet.getString("compte_source");
+                   String compteDestin = resultSet.getString("compte_destin");
+                   double valeur = resultSet.getDouble("valeur");
+                   String quand = resultSet.getString("quand");
+                   
+                   Transaction transaction = new Transaction(typeTransaction, compteSource, compteDestin, valeur, quand, numeroTransaction);
+                   transactions.add(transaction);
+               }
+               
+           }catch(SQLException e){
+               e.printStackTrace();
+           }
+           finally{
+               connexion.deconnecter();
+           }
+        
+        return transactions;
+        
+    }
+    
+    public String recupererNumeroClient(){
+           String sql = "SELECT COUNT(*) as quantiteClients FROM tbl_clients;";
+           String numeroClient = "";
+           //On ouvre la connexion sql
+           connexion.connect();
+           statement = connexion.statement();
+           try{
+               resultSet = statement.executeQuery(sql);
+               while(resultSet.next()){
+                   int numero = resultSet.getInt("quantiteClients");
+                   numeroClient = String.format("%06d", Integer.parseInt("" + numero));
+               }
+               
+           }catch(SQLException e){
+               e.printStackTrace();
+           }
+           finally{
+               connexion.deconnecter();
+           }
+           
+           return numeroClient;
+       }
+       
+    public String recupererNumeroCompte(){
+           String sql = "SELECT COUNT(*) as quantiteComptes FROM tbl_comptes";
+           String numeroClient = "";
+           //On ouvre la connexion sql
+           connexion.connect();
+           statement = connexion.statement();
+           try{
+               resultSet = statement.executeQuery(sql);
+               while(resultSet.next()){
+                   int numero = resultSet.getInt("quantiteComptes");
+                   numeroClient = String.format("%05d", Integer.parseInt("" + numero));
+               }
+               
+           }catch(SQLException e){
+               e.printStackTrace();
+           }
+           finally{
+               connexion.deconnecter();
+           }
+           
+           return numeroClient;
+       }
+    
     
 }

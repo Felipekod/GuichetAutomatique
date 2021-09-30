@@ -31,15 +31,19 @@ public class EcranClient extends javax.swing.JFrame {
      * Creates new form EcranClient
      */
     
-    int CLAVIER_NUMERIQUE_DEPOT = 0;
-    int CLAVIER_NUMERIQUE_RETRAIT = 1;
-    int CLAVIER_NUMERIQUE_TRANSFERT = 2;
-    int CLAVIER_NUMERIQUE_PAIEMENT = 3;
+    final int CLAVIER_NUMERIQUE_DEPOT = 0;
+    final int CLAVIER_NUMERIQUE_RETRAIT = 1;
+    final int CLAVIER_NUMERIQUE_TRANSFERT = 2;
+    final int CLAVIER_NUMERIQUE_PAIEMENT = 3;
     
-    int TRANSACTION_DEPOT = 1;
-    int TRANSACTION_RETRAIT = 2;
-    int TRANSACTION_TRANSFERT = 3;
-    int TRANSACTION_PAIEMENT = 4;
+    final int TRANSACTION_DEPOT = 1;
+    final int TRANSACTION_RETRAIT = 2;
+    final int TRANSACTION_TRANSFERT = 3;
+    final int TRANSACTION_FACTURE = 4;
+    
+    final double PAIEMENT_FACTURE_TAUX = 1.25;
+    
+    final double RETRAIT_MAXIMUN = 1000.0;
     
     List<CompteCheque> cheques = new ArrayList();
     List<CompteEpargne> epargnes = new ArrayList();
@@ -59,9 +63,7 @@ public class EcranClient extends javax.swing.JFrame {
         initComponents();
         this.codeClient = codeClient;
         remplirComptes();
-        remplirCbDepot();
-        remplirCbTransfert();
-        remplirCbRetrait();
+        mettreAJourCB();
     }
 
     /**
@@ -116,6 +118,9 @@ public class EcranClient extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         txtPaiement = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
+        cbPaiementCompteSource = new javax.swing.JComboBox<>();
+        lblCompteSource1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -557,37 +562,64 @@ public class EcranClient extends javax.swing.JFrame {
         txtPaiement.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtPaiement.setText("$00.0");
 
+        jButton2.setText("Payer");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPayerActionPerfomed(evt);
+            }
+        });
+
+        lblCompteSource1.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        lblCompteSource1.setForeground(new java.awt.Color(110, 110, 110));
+        lblCompteSource1.setText("Compte source");
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(146, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(144, 144, 144))
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(151, 151, 151)
+                .addGap(113, 113, 113)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(120, Short.MAX_VALUE))
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(144, 144, 144)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(150, 150, 150)
                 .addComponent(jLabel2)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtPaiement, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbPaiementCompteSource, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtPaiement, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(137, 137, 137)
+                .addComponent(lblCompteSource1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(78, 78, 78)
+                .addContainerGap(95, Short.MAX_VALUE)
+                .addComponent(lblCompteSource1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(cbPaiementCompteSource, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46)
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtPaiement, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(162, Short.MAX_VALUE))
+                .addGap(58, 58, 58)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(77, 77, 77))
         );
 
         javax.swing.GroupLayout tabPaiementLayout = new javax.swing.GroupLayout(tabPaiement);
@@ -602,9 +634,9 @@ public class EcranClient extends javax.swing.JFrame {
         tabPaiementLayout.setVerticalGroup(
             tabPaiementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tabPaiementLayout.createSequentialGroup()
-                .addGap(86, 86, 86)
+                .addGap(31, 31, 31)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(123, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("PAIEMENT", tabPaiement);
@@ -623,13 +655,13 @@ public class EcranClient extends javax.swing.JFrame {
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(295, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(81, 81, 81))
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(39, 39, 39)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -640,7 +672,9 @@ public class EcranClient extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -667,7 +701,7 @@ public class EcranClient extends javax.swing.JFrame {
                 double solde = cheques.get(indexCompte).getSolde();
                 gererBD.enregistrerSolde(numeroCompteDestin, solde);
                 //On enregistre la transaction
-                gererBD.enregistrerTransaction(TRANSACTION_DEPOT, "", numeroCompteDestin, valeur);
+                gererBD.insererTransaction(TRANSACTION_DEPOT, "", numeroCompteDestin, valeur);
                 //On met à jour le ComboBox
                 mettreAJourCB();
                 System.out.println("Depot succes");
@@ -681,7 +715,7 @@ public class EcranClient extends javax.swing.JFrame {
                 double solde = epargnes.get(indexCompte).getSolde();
                 gererBD.enregistrerSolde(numeroCompteDestin, solde);
                 //On enregistre la transaction
-                gererBD.enregistrerTransaction(TRANSACTION_DEPOT, "", numeroCompteDestin, valeur);
+                gererBD.insererTransaction(TRANSACTION_DEPOT, "", numeroCompteDestin, valeur);
                 //On met à jour le ComboBox
                 mettreAJourCB();
                 System.out.println("Depot succes");
@@ -695,7 +729,7 @@ public class EcranClient extends javax.swing.JFrame {
                 double solde = hypothecaires.get(indexCompte).getSolde();
                 gererBD.enregistrerSolde(numeroCompteDestin, solde);
                 //On enregistre la transaction
-                gererBD.enregistrerTransaction(TRANSACTION_DEPOT, "", numeroCompteDestin, valeur);
+                gererBD.insererTransaction(TRANSACTION_DEPOT, "", numeroCompteDestin, valeur);
                 //On met à jour le ComboBox
                 mettreAJourCB();
                 System.out.println("Depot succes");
@@ -738,26 +772,30 @@ public class EcranClient extends javax.swing.JFrame {
         String valeurSaisi = txtRetrait.getText().replace("$", "").replace(",", "");
         double valeur = Double.parseDouble(valeurSaisi);
         boolean multipleDeDix = (valeur % 10 == 0);
+        boolean retraitDansLaLimite = (valeur <= RETRAIT_MAXIMUN);
         int indexCompte = 0;
         
-        if(multipleDeDix || valeur <= 1000){
+       //On efecture le recrait si la valeur saisi est dans la limite et est multiple de dix
+        if(multipleDeDix && retraitDansLaLimite){
             //On recupere la compte source
-            String compteSource = cbRetraitCompteSource.getSelectedItem().toString();
+            String compteSourceItemRetrait = cbRetraitCompteSource.getSelectedItem().toString();
+       
             //On identifie le type de la compte et le numero
-            String[] compteChoisi = compteSource.split(" ");
+            String[] compteChoisi = compteSourceItemRetrait.split(" ");
             String numeroCompteSource = compteChoisi[1];
             String compteType = compteChoisi[0];
 
             if(compteType.equals("Cheque")){
-                System.out.println("Depot ok 1");
                 indexCompte = getIndexComptesCheques(numeroCompteSource, cheques);
-                //On effectue le depot dans la compte cheque
-                boolean succces = cheques.get(indexCompte).retrait(valeur);
+                //On recupere la compreSource
+                CompteCheque ccRetrait = cheques.get(indexCompte);
+                //On essaye de effecteur le retrait
+                boolean succces = ccRetrait.retrait(valeur, margeCredit, gererBD);
                 if(succces){
                     double solde = cheques.get(indexCompte).getSolde();
                     gererBD.enregistrerSolde(numeroCompteSource, solde);
                     //On enregistre la transaction
-                    gererBD.enregistrerTransaction(TRANSACTION_RETRAIT, numeroCompteSource, "", valeur);
+                    gererBD.insererTransaction(TRANSACTION_RETRAIT, numeroCompteSource, "", valeur);
                     //On met à jour le ComboBox
                     mettreAJourCB();
                     System.out.println("Retrait succes");
@@ -771,7 +809,7 @@ public class EcranClient extends javax.swing.JFrame {
                     double solde = epargnes.get(indexCompte).getSolde();
                     gererBD.enregistrerSolde(numeroCompteSource, solde);
                     //On enregistre la transaction
-                    gererBD.enregistrerTransaction(TRANSACTION_RETRAIT, numeroCompteSource , "" , valeur);
+                    gererBD.insererTransaction(TRANSACTION_RETRAIT, numeroCompteSource , "" , valeur);
                     //On met à jour le ComboBox
                     mettreAJourCB();
                     System.out.println("Retrait succes");
@@ -779,7 +817,7 @@ public class EcranClient extends javax.swing.JFrame {
             }
         }
         else{
-            //TODO si nao é multiplo de 10
+            //TODO si nao é multiplo de 10 ou até 1000
         }
         
         
@@ -843,13 +881,15 @@ public class EcranClient extends javax.swing.JFrame {
         //On recupère la valeur saisi
         String valeurSaisi = txtTransfert.getText().replace("$", "").replace(",", "");
         double valeur = Double.parseDouble(valeurSaisi);
-        
-        int indexCompte = 0;
-        
+        boolean succes = true;
+        int indexCompteSource = 0;
+        int indexCompteDestin = 0;
+        double soldeCompteDestin = 0;
+        double soldeCompteSource;
         
             //On recupere la compte source et compte destin
             String compteSource = cbTransfertCompteSource.getSelectedItem().toString();
-            String compteDestin = cbTransfertCompteDestin.getSelectedItem().toString();
+            String compteDestinItem = cbTransfertCompteDestin.getSelectedItem().toString();
             
             //On identifie le type de la compte et le numero
             //Compte source
@@ -857,43 +897,111 @@ public class EcranClient extends javax.swing.JFrame {
             String numeroCompteSource = compteSourceChoisi[1];
             String compteSourceType = compteSourceChoisi[0];
             //CompteDestin
-            String[] compteDestinChoisi = compteDestin.split(" ");
+            String[] compteDestinChoisi = compteDestinItem.split(" ");
             String numeroCompteDestin = compteDestinChoisi[1];
             String compteDestinType = compteDestinChoisi[0];
 
-            if(compteSourceType.equals("Cheque")){
-                System.out.println("Depot ok 1");
+            //On recupere la compte Cheque source et de la compte destin
+            indexCompteSource = getIndexComptesCheques(numeroCompteSource, cheques);
+            
+            //on Recupère la compte source
+            CompteCheque compteSourceTransfert = cheques.get(indexCompteSource);             
+
+            //On effectue le transfert dans la compte.
+            if(compteDestinType.equals("Cheque")){
+                CompteCheque compteDestin = cheques.get(indexCompteDestin);
+                succes = compteSourceTransfert.transfertSolde(compteDestin, valeur);
+                soldeCompteDestin = compteDestin.getSolde();
+            }
+            else if(compteDestinType.equals("Épargne")){
+                CompteEpargne compteDestin = epargnes.get(indexCompteDestin);
+                succes = compteSourceTransfert.transfertSolde(compteDestin, valeur);
+                soldeCompteDestin = compteDestin.getSolde();
+            }
+            else if(compteDestinType.equals("Hypothecaire")){
+                CompteHypothecaire compteDestin = hypothecaires.get(indexCompteDestin);
+                succes = compteSourceTransfert.transfertSolde(compteDestin, valeur);
+                soldeCompteDestin = compteDestin.getSolde();
+            }
+            else if (compteDestinType.equals("Credit")){
+                MargeDeCredit compteDestin = margeCredit;
+                succes = compteSourceTransfert.transfertSolde(compteDestin, valeur);
+                soldeCompteDestin = compteDestin.getSolde();
+            }
+            // Si transaction a été bien effectuée, on l'enregistre dans la BD.
+            if(succes){
+                    //On recupere la solde de la compte source
+                    soldeCompteSource = compteSourceTransfert.getSolde();
+                    
+                    //On enregistre les soldes des comptes source et destin.
+                    gererBD.enregistrerSolde(numeroCompteSource, soldeCompteSource);
+                    gererBD.enregistrerSolde(numeroCompteDestin, soldeCompteDestin);
+                    //On enregistre la transaction
+                    gererBD.insererTransaction(TRANSACTION_TRANSFERT, numeroCompteSource, numeroCompteDestin, valeur);
+                    //On met à jour le ComboBox
+                    mettreAJourCB();
+                    System.out.println("Transaction succes");
+            }
+           
+        
+    }//GEN-LAST:event_btnTransfertActionPerfomed
+
+    private void btnPayerActionPerfomed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayerActionPerfomed
+        
+        //On recupère la valeur saisi
+        String valeurSaisi = txtPaiement.getText().replace("$", "").replace(",", "");
+        double valeur = Double.parseDouble(valeurSaisi) + PAIEMENT_FACTURE_TAUX;
+        int indexCompte = 0;
+        
+       //On efecture le recrait si la valeur saisi est dans la limite et est multiple de dix
+       
+            //On recupere la compte source
+            String compteSourceItemRetrait = cbRetraitCompteSource.getSelectedItem().toString();
+       
+            //On identifie le type de la compte et le numero
+            String[] compteChoisi = compteSourceItemRetrait.split(" ");
+            String numeroCompteSource = compteChoisi[1];
+            String compteType = compteChoisi[0];
+
+            if(compteType.equals("Cheque")){
                 indexCompte = getIndexComptesCheques(numeroCompteSource, cheques);
+                //On recupere la compreSource
+                CompteCheque ccRetrait = cheques.get(indexCompte);
                 
+                //On check la necessite de prendre de credit dans la Marge de Credit
+                boolean necessiteCredit = (ccRetrait.getSolde() < valeur);
                 //On effectue le depot dans la compte cheque
                 boolean succces = cheques.get(indexCompte).retrait(valeur);
+                //Si l'utilisateur a besoin d'utilisé le credit
+                if(necessiteCredit){
+                    //On verifie la valeur moins ce que devrait rester dans la compte
+                    double valeurCreditDemande = (ccRetrait.getSolde() - valeur) * (-1);
+                    //On essaye de faire la transaction
+                    boolean succesCredit = margeCredit.retraitMargeCredit(valeurCreditDemande);
+                    //Si la valeur demandé est dans la limite du credit on doit s'assurer que la solde de la compte cheque est à zero
+                    if(succesCredit){
+                        ccRetrait.setSolde(0);
+                        succces = true;
+                        System.out.println("solde credit = " + margeCredit.getSolde());
+                        //On enregistre la solde du credit
+                        boolean soldeCreditEnregistre = gererBD.enregistrerSolde(margeCredit.getNumero(), margeCredit.getSolde());
+                        System.out.println("solde credit enregistre:  " + soldeCreditEnregistre);
+                    }
+                }
                 if(succces){
                     double solde = cheques.get(indexCompte).getSolde();
                     gererBD.enregistrerSolde(numeroCompteSource, solde);
                     //On enregistre la transaction
-                    gererBD.enregistrerTransaction(TRANSACTION_RETRAIT, numeroCompteSource, "", valeur);
+                    gererBD.insererTransaction(TRANSACTION_FACTURE, numeroCompteSource, "", valeur);
                     //On met à jour le ComboBox
                     mettreAJourCB();
-                    System.out.println("Retrait succes");
+                    System.out.println("Facture succes");
                 }
             }
-            else if(compteSourceType.equals("Épargne") ){
-                indexCompte = getIndexComptesEpargnes(numeroCompteSource, epargnes);
-                //On effectue le depot dans la compte cheque
-                boolean succces = epargnes.get(indexCompte).retrait(valeur);
-                if(succces){
-                    double solde = epargnes.get(indexCompte).getSolde();
-                    gererBD.enregistrerSolde(numeroCompteSource, solde);
-                    //On enregistre la transaction
-                    gererBD.enregistrerTransaction(TRANSACTION_RETRAIT, numeroCompteSource , "" , valeur);
-                    //On met à jour le ComboBox
-                    mettreAJourCB();
-                    System.out.println("Retrait succes");
-                }
-            }
-       
+            
         
-    }//GEN-LAST:event_btnTransfertActionPerfomed
+        
+    }//GEN-LAST:event_btnPayerActionPerfomed
 
   
     /**
@@ -969,6 +1077,7 @@ public class EcranClient extends javax.swing.JFrame {
                 }
                 else if(compteType == 4){
                     MargeDeCredit compte = new MargeDeCredit(numero, codeClient);
+                    compte.setSolde(solde);
                     this.margeCredit = compte;
                 }
                 
@@ -987,6 +1096,7 @@ public class EcranClient extends javax.swing.JFrame {
         remplirCbTransfert();
         remplirCbDepot();
         remplirCbRetrait();
+        remplirCbPaiement();
     }
     private void remplirCbTransfert(){
         //On vide le CB
@@ -1022,25 +1132,39 @@ public class EcranClient extends javax.swing.JFrame {
         ajouterCbHypothecaires(hypothecaires.size(), cbDepotCompteDestin);
     }
     
+    private void remplirCbPaiement(){
+        //On vide le CB
+        cbPaiementCompteSource.removeAllItems();
+        
+        //On ajoute les comptes cheques
+        ajouterCbCheques(cheques.size(), cbPaiementCompteSource);
+    }
+    
     public void AjouterCbMargeCredit(MargeDeCredit mc, JComboBox cb){
+        if(mc != null){
             //On arroundi la solde de la compte
             double solde = mc.getSolde();
-            DecimalFormat df = new DecimalFormat("#.##");      
-            solde = Double.valueOf(df.format(solde));
+            //On utilise le NumberFormat pour afficher la valeur en dolar
+            Locale locale = new Locale("en", "US");
+            NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
+            String soldeFormate = fmt.format(solde);
             //On cree une string pour l'item
-            String cbItem = "Cheque "+ mc.getNumero() + " : Solde $" + solde;
+            String cbItem = "Credit "+ mc.getNumero() + " : Solde " + soldeFormate;
             //On ajoute l'item au CB
             cb.addItem(cbItem);
+        }
     }
     
     public void ajouterCbCheques(int quantiteCheques, JComboBox cb){
         for(int i = 0; i < quantiteCheques; i++ ){
             //On arroundi la solde de la compte
             double solde = cheques.get(i).getSolde();
-            DecimalFormat df = new DecimalFormat("#.##");      
-            solde = Double.valueOf(df.format(solde));
+            //On utilise le NumberFormat pour afficher la valeur en dolar
+            Locale locale = new Locale("en", "US");
+            NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
+            String soldeFormate = fmt.format(solde);
             //On cree une string pour l'item
-            String cbItem = "Cheque "+ cheques.get(i).getNumero()+ " : Solde $" + solde;
+            String cbItem = "Cheque "+ cheques.get(i).getNumero()+ " : Solde " + soldeFormate;
             //On ajoute l'item au CB
             cb.addItem(cbItem);
         }
@@ -1050,10 +1174,12 @@ public class EcranClient extends javax.swing.JFrame {
         for(int i = 0; i < quantiteEpargnes; i++ ){
             //On arroundi la solde de la compte
             double solde = epargnes.get(i).getSolde();
-            DecimalFormat df = new DecimalFormat("#.##");      
-            solde = Double.valueOf(df.format(solde));
+            //On utilise le NumberFormat pour afficher la valeur en dolar
+            Locale locale = new Locale("en", "US");
+            NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
+            String soldeFormate = fmt.format(solde);
             //On cree une string pour l'item
-            String cbItem = "Épargne "+ epargnes.get(i).getNumero()+ " : Solde $" + solde;
+            String cbItem = "Épargne "+ epargnes.get(i).getNumero()+ " : Solde " + soldeFormate;
             //On ajoute l'item au CB
             cb.addItem(cbItem);
         }
@@ -1063,10 +1189,12 @@ public class EcranClient extends javax.swing.JFrame {
         for(int i = 0; i < quantiteHypothecaires; i++ ){
             //On arroundi la solde de la compte
             double solde = hypothecaires.get(i).getSolde();
-            DecimalFormat df = new DecimalFormat("#.##");      
-            solde = Double.valueOf(df.format(solde));
+            //On utilise le NumberFormat pour afficher la valeur en dolar
+            Locale locale = new Locale("en", "US");
+            NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
+            String soldeFormate = fmt.format(solde);
             //On cree une string pour l'item
-            String cbItem = "Hypothecaire "+ hypothecaires.get(i).getNumero()+ " : Solde $" + solde;
+            String cbItem = "Hypothecaire "+ hypothecaires.get(i).getNumero()+ " : Solde " + soldeFormate;
             //On ajoute l'item au CB
             cb.addItem(cbItem);
         }
@@ -1100,10 +1228,12 @@ public class EcranClient extends javax.swing.JFrame {
     private javax.swing.JButton btnRetrait;
     private javax.swing.JButton btnTransferer;
     private javax.swing.JComboBox<String> cbDepotCompteDestin;
+    private javax.swing.JComboBox<String> cbPaiementCompteSource;
     private javax.swing.JComboBox<String> cbRetraitCompteSource;
     private javax.swing.JComboBox<String> cbTransfertCompteDestin;
     private javax.swing.JComboBox<String> cbTransfertCompteSource;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
@@ -1121,6 +1251,7 @@ public class EcranClient extends javax.swing.JFrame {
     private javax.swing.JLabel lblCompteDestin1;
     private javax.swing.JLabel lblCompteDestin2;
     private javax.swing.JLabel lblCompteSource;
+    private javax.swing.JLabel lblCompteSource1;
     private javax.swing.JPanel tabDepot;
     private javax.swing.JPanel tabPaiement;
     private javax.swing.JPanel tabRetrait;

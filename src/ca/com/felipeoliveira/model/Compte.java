@@ -11,10 +11,10 @@ package ca.com.felipeoliveira.model;
  */
 public abstract class Compte {
     
-    protected final int COMPTE_CHEQUE = 1;
-    protected final int COMPTE_EPARGNE = 2;
-    protected final int COMPTE_HYPOTHECAIRE = 3;
-    protected final int COMPTE_MARGECREDIT = 4;
+    public final int COMPTE_CHEQUE = 1;
+    public final int COMPTE_EPARGNE = 2;
+    public final int COMPTE_HYPOTHECAIRE = 3;
+    public final int COMPTE_MARGECREDIT = 4;
     
     private String  numero;
     private String codeTitulaire;

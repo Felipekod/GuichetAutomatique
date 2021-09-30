@@ -35,6 +35,19 @@ public class MargeDeCredit extends Compte {
             return success;
     }
     
+    public boolean retraitMargeCredit(double valeur){
+        boolean succes = true;
+        if(this.solde + valeur <= this.limite){
+            this.solde += valeur;
+        }
+        else 
+        {
+            succes = false;
+            System.out.println("Limite atteint dans la marge de credit");
+        }
+        return succes;
+    }
+    
 
     
 }

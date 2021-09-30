@@ -29,6 +29,16 @@ public class Client {
         this.codeClient = codeClient;
     }
     
+    public Client(String codeClient, String nom, String prenom, String telephone, String NIP, int essaieLogin){
+        Client.total ++;
+        this.NIP = NIP;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.telephone = telephone;
+        this.codeClient = codeClient;
+        this.essaieLogin = essaieLogin;
+    }
+    
     public int getEsssaieLogin(){
         return this.essaieLogin;
     }

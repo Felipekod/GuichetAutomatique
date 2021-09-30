@@ -4,11 +4,15 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/Users/felipeoliveira/NetBeansProjects/GuichetAutomatique/src/ca/com/felipeoliveira/view/EcranClient.java</file>
+            <file>file:/Users/felipeoliveira/NetBeansProjects/GuichetAutomatique/src/ca/com/felipeoliveira/viewmodel/ConnexionSQLite.java</file>
+            <file>file:/Users/felipeoliveira/NetBeansProjects/GuichetAutomatique/src/ca/com/felipeoliveira/view/EcranAdmin.java</file>
             <file>file:/Users/felipeoliveira/NetBeansProjects/GuichetAutomatique/src/ca/com/felipeoliveira/model/CompteHypothecaire.java</file>
-            <file>file:/Users/felipeoliveira/NetBeansProjects/GuichetAutomatique/src/ca/com/felipeoliveira/GuichetAutomatique.java</file>
-            <file>file:/Users/felipeoliveira/NetBeansProjects/GuichetAutomatique/src/ca/com/felipeoliveira/viewmodel/RemplirBD.java</file>
-            <file>file:/Users/felipeoliveira/NetBeansProjects/GuichetAutomatique/src/ca/com/felipeoliveira/model/Compte.java</file>
+            <file>file:/Users/felipeoliveira/NetBeansProjects/GuichetAutomatique/src/ca/com/felipeoliveira/viewmodel/GererBD.java</file>
+            <file>file:/Users/felipeoliveira/NetBeansProjects/GuichetAutomatique/src/ca/com/felipeoliveira/model/Client.java</file>
+            <file>file:/Users/felipeoliveira/NetBeansProjects/GuichetAutomatique/src/ca/com/felipeoliveira/viewmodel/Guichet.java</file>
             <file>file:/Users/felipeoliveira/NetBeansProjects/GuichetAutomatique/src/ca/com/felipeoliveira/model/CompteEpargne.java</file>
+            <file>file:/Users/felipeoliveira/NetBeansProjects/GuichetAutomatique/src/ca/com/felipeoliveira/model/Compte.java</file>
+            <file>file:/Users/felipeoliveira/NetBeansProjects/GuichetAutomatique/src/ca/com/felipeoliveira/model/Transaction.java</file>
             <file>file:/Users/felipeoliveira/NetBeansProjects/GuichetAutomatique/src/ca/com/felipeoliveira/model/CompteCheque.java</file>
             <file>file:/Users/felipeoliveira/NetBeansProjects/GuichetAutomatique/src/ca/com/felipeoliveira/model/MargeDeCredit.java</file>
         </group>
