@@ -13,8 +13,15 @@ public class Guichet {
     private double solde = 0;
     private int limite = 20000;
     
+    public Guichet(double solde){
+        this.solde = solde;
+    }
+    
     public double getSolde(){
         return this.solde;
+    }
+    public void retrait(double valeur){
+        this.solde -= valeur;
     }
     
     public boolean setSoldePlus5k(){

@@ -30,7 +30,7 @@ import javax.swing.JComboBox;
 public class EcranAdmin extends javax.swing.JFrame {
 
     
-    List<CompteCheque> cheques = new ArrayList();
+    List<CompteCheque> cheques;
     List<CompteEpargne> epargnes = new ArrayList();
     List<CompteHypothecaire> hypothecaires = new ArrayList();
     List<Transaction> transactions;
@@ -48,6 +48,10 @@ public class EcranAdmin extends javax.swing.JFrame {
      */
     public EcranAdmin() {
         initComponents();
+        txtLimite.setEnabled(false);
+        btnModifierLimite.setEnabled(false);
+        btnCreerCompte.setEnabled(false);
+        btnPrelevementHypothecaire.setEnabled(false);
     }
 
     /**
@@ -107,8 +111,13 @@ public class EcranAdmin extends javax.swing.JFrame {
         lblLimite = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         txtLimite = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnModifierLimite = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
+        lblCreditSolde = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        btnInteret = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
@@ -337,10 +346,10 @@ public class EcranAdmin extends javax.swing.JFrame {
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(cbTypeCompteCreer, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel10Layout.createSequentialGroup()
-                            .addGap(35, 35, 35)
+                    .addGroup(jPanel10Layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(cbTypeCompteCreer, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnCreerCompte, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel10Layout.createSequentialGroup()
                         .addContainerGap()
@@ -370,6 +379,11 @@ public class EcranAdmin extends javax.swing.JFrame {
         cbHypothecaires.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         btnPrelevementHypothecaire.setText("PRELEVEMENT");
+        btnPrelevementHypothecaire.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrelevementHypothecaireActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
@@ -428,7 +442,17 @@ public class EcranAdmin extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("MODIFIER LIMITE");
+        btnModifierLimite.setText("MODIFIER LIMITE");
+        btnModifierLimite.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModifierLimiteActionPerformed(evt);
+            }
+        });
+
+        jLabel11.setForeground(new java.awt.Color(51, 51, 255));
+        jLabel11.setText("Solde:");
+
+        lblCreditSolde.setText("setLimite");
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
@@ -444,12 +468,16 @@ public class EcranAdmin extends javax.swing.JFrame {
                         .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel10)
                             .addComponent(txtLimite, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnModifierLimite, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel12Layout.createSequentialGroup()
                                 .addComponent(jLabel9)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblLimite)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(lblLimite)
+                                .addGap(37, 37, 37)
+                                .addComponent(jLabel11)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblCreditSolde)))))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
         jPanel12Layout.setVerticalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -459,13 +487,15 @@ public class EcranAdmin extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(lblLimite))
+                    .addComponent(lblLimite)
+                    .addComponent(jLabel11)
+                    .addComponent(lblCreditSolde))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtLimite, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnModifierLimite, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(25, Short.MAX_VALUE))
         );
 
@@ -536,18 +566,43 @@ public class EcranAdmin extends javax.swing.JFrame {
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 196));
 
+        jButton1.setText("AJOUTER $5000");
+
+        btnInteret.setText("PAYER INTÉRÊT AUX COMPTES CHEQUES");
+        btnInteret.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInteretActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("CHARGER INTÉRÊT AUX CREDITS");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 962, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(52, 52, 52)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(86, 86, 86)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnInteret, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE))
+                .addContainerGap(136, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 638, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(86, 86, 86)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnInteret, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(94, 94, 94)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(172, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("GERER COMPTES", jPanel4);
+        jTabbedPane1.addTab("GERER GUICHET", jPanel4);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -590,7 +645,7 @@ public class EcranAdmin extends javax.swing.JFrame {
         
         boolean succes = gererBD.insererClient(codeNvClient, nomNvClient, prenomNvClient, telNvClient, nipNvClient);
         if(succes){
-            succes = gererBD.insererCompteCheque(codeNvClient, 1);
+            succes = gererBD.insererCompte(codeNvClient, 1);
         }
         
     }//GEN-LAST:event_btnAjouterClientActionPerformed
@@ -600,6 +655,11 @@ public class EcranAdmin extends javax.swing.JFrame {
         String codeClientRecherche = txtCodeClientChercher.getText();
         Client client = gererBD.retournerClient(codeClientRecherche);
         if(client != null){
+            listTransactions.setEnabled(true);
+            //On active les boutons
+            btnCreerCompte.setEnabled(true);
+            btnPrelevementHypothecaire.setEnabled(true);
+            //On set le code du client
             codeClient = codeClientRecherche;
             //On affiche les informations du client trouvé
             lblCodeClient.setText(client.getCodeClient());
@@ -609,6 +669,18 @@ public class EcranAdmin extends javax.swing.JFrame {
             remplirComptes();
             //On remplit le cb
             remplirCbHypothecaires();
+            //On verifie si le client une marge de credit
+            margeCredit = gererBD.retournerCredit(codeClient);
+            if(margeCredit != null){
+                lblLimite.setText("" + margeCredit.getLimite());
+                txtLimite.setEnabled(true);
+                btnModifierLimite.setEnabled(true);
+                lblCreditSolde.setText(String.format("%.2f", margeCredit.getSolde()));
+            }
+            else {
+                txtLimite.setEnabled(false);
+            }
+            
             //On set le status de la compte
             if(client.getEsssaieLogin() < 4)
                 btnClientStatus.setText("CLIENT ACTIF");
@@ -621,6 +693,11 @@ public class EcranAdmin extends javax.swing.JFrame {
         }
         else{
             //to do client pas trouvé
+            txtLimite.setEnabled(false);
+            btnModifierLimite.setEnabled(false);
+            btnCreerCompte.setEnabled(false);
+            btnPrelevementHypothecaire.setEnabled(false);
+            listTransactions.setEnabled(false);
             
         }
     }//GEN-LAST:event_btnChercherClientActionPerformed
@@ -629,18 +706,88 @@ public class EcranAdmin extends javax.swing.JFrame {
         //On selectionne
         String TypeCompteSelectionne = cbTypeCompteCreer.getSelectedItem().toString();
         if(TypeCompteSelectionne.equals("Cheque"))
-            gererBD.insererCompteCheque(codeClient, 1);
+            gererBD.insererCompte(codeClient, 1);
         if(TypeCompteSelectionne.equals("Épargne"))
-            gererBD.insererCompteCheque(codeClient, 2);
+            gererBD.insererCompte(codeClient, 2);
         if(TypeCompteSelectionne.equals("Hypothecaire"))
-            gererBD.insererCompteCheque(codeClient, 3);
-        if(TypeCompteSelectionne.equals("Marge de crédit"))
-            gererBD.insererCompteCheque(codeClient, 4);
+            gererBD.insererCompte(codeClient, 3);
+        if(TypeCompteSelectionne.equals("Marge de crédit")){
+            if(margeCredit == null)
+                gererBD.insererCompte(codeClient, 4);
+            else {
+                // Marge credit existe deja
+            }
+        }
+            
     }//GEN-LAST:event_btnCreerCompteActionPerformed
 
     private void txtLimiteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLimiteActionPerformed
-        // TODO add your handling code here:
+        
+        
     }//GEN-LAST:event_txtLimiteActionPerformed
+
+    private void btnModifierLimiteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifierLimiteActionPerformed
+        //On recupere la valeur limite saisir
+        String valeurSaisi = txtLimite.getText();
+        boolean limiteEstInt = isInt(valeurSaisi);
+        if(limiteEstInt){
+            int nvLimite = Integer.parseInt(valeurSaisi);
+            boolean limiteChange = gererBD.enregistrerLimiteCredit(codeClient, nvLimite);
+            if(limiteChange){
+                lblLimite.setText(valeurSaisi);
+                margeCredit.setLimite(nvLimite);
+                txtLimite.setText("");
+            }
+        }
+        else{
+            // Valeur nom int
+        }
+        
+    }//GEN-LAST:event_btnModifierLimiteActionPerformed
+
+    private void btnPrelevementHypothecaireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrelevementHypothecaireActionPerformed
+        String prelevementSaisi = txtValeurPrelevementHypothecaire.getText();
+        boolean valeurEstDouble = isDouble(prelevementSaisi);
+        if(valeurEstDouble){
+            double valeur = Double.parseDouble(prelevementSaisi);
+            //On recupere la compte source
+            String compteSourceItemRetrait = cbHypothecaires.getSelectedItem().toString();
+       
+            //On identifie le type de la compte et le numero
+            String[] compteChoisi = compteSourceItemRetrait.split(" ");
+            String numeroCompteSource = compteChoisi[1];
+            String compteType = compteChoisi[0];
+            
+            int indexCompte = getIndexComptesHypothecaire(numeroCompteSource, hypothecaires);
+            //On recupere la compreSource
+            CompteHypothecaire ch = hypothecaires.get(indexCompte);
+            boolean succes = ch.prelevement(valeur, margeCredit, gererBD);
+            if(succes){
+                //On remplit les comptes
+                remplirComptes();
+                //On remplit le cb
+                remplirCbHypothecaires();
+                gererBD.insererTransaction(5, ch.getNumero(), "", valeur);
+                //On remplit la liste des transactions
+                remplirListeTransactions();
+                if(margeCredit != null)
+                     lblCreditSolde.setText(String.format("%.2f", margeCredit.getSolde()));
+            }
+        }
+        else{
+            //valeur nom numerique
+        }
+    }//GEN-LAST:event_btnPrelevementHypothecaireActionPerformed
+
+    private void btnInteretActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInteretActionPerformed
+        //On recupere la liste des comptes cheques
+        cheques = gererBD.retournerListCheque();
+        int chequesSize = cheques.size();
+        
+        for(int i = 0; i < chequesSize; i++){
+            cheques.get(i).payerInteret(gererBD);
+        }  
+    }//GEN-LAST:event_btnInteretActionPerformed
 
     /**
      * @param args the command line arguments
@@ -678,6 +825,35 @@ public class EcranAdmin extends javax.swing.JFrame {
     }
     
     //METHODES 
+    
+        private int getIndexComptesHypothecaire(String numeroCompte, List<CompteHypothecaire>comptes){
+             int numero = 0;
+            for(int i = 0; i < comptes.size(); i++){
+                if(numeroCompte.equals(comptes.get(i).getNumero())){
+                    numero = i;
+                }
+            }
+            return numero;
+        }
+    
+        private boolean isInt(String str) { 
+          try {  
+            Integer.parseInt(str);  
+            return true;
+          } catch(NumberFormatException e){  
+            return false;  
+          }  
+        }
+        
+        private boolean isDouble(String str) { 
+          try {  
+            Double.parseDouble(str);  
+            return true;
+          } catch(NumberFormatException e){  
+            return false;  
+          }  
+        }
+    
         private void remplirComptes(){
         //On vide les listes des comptes
         cheques.clear();
@@ -783,12 +959,16 @@ public class EcranAdmin extends javax.swing.JFrame {
     private javax.swing.JButton btnChercherClient;
     private javax.swing.JButton btnClientStatus;
     private javax.swing.JButton btnCreerCompte;
+    private javax.swing.JButton btnInteret;
+    private javax.swing.JButton btnModifierLimite;
     private javax.swing.JButton btnPrelevementHypothecaire;
     private javax.swing.JComboBox<String> cbHypothecaires;
     private javax.swing.JComboBox<String> cbTypeCompteCreer;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -815,6 +995,7 @@ public class EcranAdmin extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblCodeClient;
+    private javax.swing.JLabel lblCreditSolde;
     private javax.swing.JLabel lblLimite;
     private javax.swing.JLabel lblNomC;
     private javax.swing.JLabel lblNomPrenomClient;

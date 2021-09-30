@@ -8,6 +8,7 @@ package ca.com.felipeoliveira.view;
 import ca.com.felipeoliveira.model.*;
 import ca.com.felipeoliveira.viewmodel.ConnexionSQLite;
 import ca.com.felipeoliveira.viewmodel.GererBD;
+import ca.com.felipeoliveira.viewmodel.Guichet;
 import java.lang.StringBuilder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -49,6 +50,7 @@ public class EcranClient extends javax.swing.JFrame {
     List<CompteEpargne> epargnes = new ArrayList();
     List<CompteHypothecaire> hypothecaires = new ArrayList();
     MargeDeCredit margeCredit;
+    Guichet guichet;
     
     
     ConnexionSQLite connexion = new ConnexionSQLite();
@@ -64,6 +66,7 @@ public class EcranClient extends javax.swing.JFrame {
         this.codeClient = codeClient;
         remplirComptes();
         mettreAJourCB();
+        guichet = gererBD.retournerGuichet();
     }
 
     /**
@@ -774,9 +777,13 @@ public class EcranClient extends javax.swing.JFrame {
         boolean multipleDeDix = (valeur % 10 == 0);
         boolean retraitDansLaLimite = (valeur <= RETRAIT_MAXIMUN);
         int indexCompte = 0;
+        boolean soldeGuichetDisponible = (guichet.getSolde() >= valeur);
         
+        if(!soldeGuichetDisponible){
+            //message pas de solde 
+        }
        //On efecture le recrait si la valeur saisi est dans la limite et est multiple de dix
-        if(multipleDeDix && retraitDansLaLimite){
+        if(multipleDeDix && retraitDansLaLimite && soldeGuichetDisponible){
             //On recupere la compte source
             String compteSourceItemRetrait = cbRetraitCompteSource.getSelectedItem().toString();
        
@@ -813,6 +820,9 @@ public class EcranClient extends javax.swing.JFrame {
                     //On met à jour le ComboBox
                     mettreAJourCB();
                     System.out.println("Retrait succes");
+                    //On met a jour le guichet
+                    guichet.retrait(valeur);
+                    gererBD.enregistrerSoldeGuichet(guichet.getSolde());
                 }
             }
         }

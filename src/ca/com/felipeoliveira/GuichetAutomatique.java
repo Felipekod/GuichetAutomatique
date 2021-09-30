@@ -27,6 +27,7 @@ public class GuichetAutomatique {
         gererBD.creerTableClient();
         gererBD.creerTableComptes();
         gererBD.creerTableTransaction();
+        gererBD.creerTableGuichet();
         
 
         //utiliser les methodes de la classe ReplirBD pour faire des tests
@@ -36,14 +37,9 @@ public class GuichetAutomatique {
             //remplirBD.remplirComptesEpargnes();
             //remplirBD.remplirComptesHypothecaire();
             //remplirBD.remplirMargeCredit();
-
-
-        
+            //gererBD.insererGuichet();
         Login login = new Login();
-        login.setVisible(true);
-        
-                 
-        
+        login.setVisible(true);  
     }
     
     

@@ -16,7 +16,7 @@ public abstract class Compte {
     public final int COMPTE_HYPOTHECAIRE = 3;
     public final int COMPTE_MARGECREDIT = 4;
     
-    private String  numero;
+    protected String  numero;
     private String codeTitulaire;
     private static int total = 0;
     private int compteType;

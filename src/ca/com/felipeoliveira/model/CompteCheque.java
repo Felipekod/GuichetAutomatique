@@ -100,6 +100,7 @@ public class CompteCheque extends Compte{
         }
         return succes;
     }
+    
     public boolean transfertSolde(MargeDeCredit compteDestin, double valeur){
         boolean succes = true;
         if(this.solde > valeur)
@@ -129,4 +130,13 @@ public class CompteCheque extends Compte{
         }
         return succes;
     }
+    
+    public boolean payerInteret(GererBD gererBD){
+        boolean succes = true;
+        double interet = this.solde * 0.01;
+        this.solde += interet;
+        succes = gererBD.enregistrerSolde(this.numero, solde);
+        return succes;
+    }
+    
 }

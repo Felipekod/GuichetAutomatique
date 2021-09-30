@@ -536,10 +536,10 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                                          <Component id="cbTypeCompteCreer" min="-2" pref="251" max="-2" attributes="0"/>
-                                          <Group type="102" attributes="0">
-                                              <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="1" attributes="0">
+                                              <Component id="cbTypeCompteCreer" min="-2" pref="251" max="-2" attributes="0"/>
                                               <Component id="btnCreerCompte" min="-2" pref="233" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
@@ -693,6 +693,9 @@
                           <Properties>
                             <Property name="text" type="java.lang.String" value="PRELEVEMENT"/>
                           </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPrelevementHypothecaireActionPerformed"/>
+                          </Events>
                         </Component>
                       </SubComponents>
                     </Container>
@@ -717,16 +720,20 @@
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
                                               <Component id="txtLimite" alignment="0" min="-2" pref="210" max="-2" attributes="0"/>
-                                              <Component id="jButton1" alignment="0" min="-2" pref="237" max="-2" attributes="0"/>
+                                              <Component id="btnModifierLimite" alignment="0" min="-2" pref="237" max="-2" attributes="0"/>
                                               <Group type="102" alignment="0" attributes="0">
                                                   <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
                                                   <EmptySpace max="-2" attributes="0"/>
                                                   <Component id="lblLimite" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+                                                  <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="lblCreditSolde" min="-2" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
                                       </Group>
                                   </Group>
-                                  <EmptySpace max="32767" attributes="0"/>
+                                  <EmptySpace pref="46" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                         </DimensionLayout>
@@ -739,13 +746,15 @@
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="lblLimite" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblCreditSolde" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="txtLimite" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="jButton1" min="-2" pref="61" max="-2" attributes="0"/>
+                                  <Component id="btnModifierLimite" min="-2" pref="61" max="-2" attributes="0"/>
                                   <EmptySpace pref="25" max="32767" attributes="0"/>
                               </Group>
                           </Group>
@@ -789,9 +798,25 @@
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtLimiteActionPerformed"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JButton" name="jButton1">
+                        <Component class="javax.swing.JButton" name="btnModifierLimite">
                           <Properties>
                             <Property name="text" type="java.lang.String" value="MODIFIER LIMITE"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnModifierLimiteActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JLabel" name="jLabel11">
+                          <Properties>
+                            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                              <Color blue="ff" green="33" red="33" type="rgb"/>
+                            </Property>
+                            <Property name="text" type="java.lang.String" value="Solde:"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JLabel" name="lblCreditSolde">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="setLimite"/>
                           </Properties>
                         </Component>
                       </SubComponents>
@@ -808,8 +833,8 @@
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                  <JTabbedPaneConstraints tabName="GERER COMPTES">
-                    <Property name="tabTitle" type="java.lang.String" value="GERER COMPTES"/>
+                  <JTabbedPaneConstraints tabName="GERER GUICHET">
+                    <Property name="tabTitle" type="java.lang.String" value="GERER GUICHET"/>
                   </JTabbedPaneConstraints>
                 </Constraint>
               </Constraints>
@@ -817,15 +842,53 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="962" max="32767" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
+                          <Component id="jButton1" min="-2" pref="344" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="86" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="jButton3" max="32767" attributes="0"/>
+                              <Component id="btnInteret" pref="344" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace pref="136" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="638" max="32767" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="86" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="btnInteret" pref="145" max="32767" attributes="0"/>
+                              <Component id="jButton1" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="94" max="-2" attributes="0"/>
+                          <Component id="jButton3" min="-2" pref="141" max="-2" attributes="0"/>
+                          <EmptySpace pref="172" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
                 </DimensionLayout>
               </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JButton" name="jButton1">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="AJOUTER $5000"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnInteret">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="PAYER INT&#xc9;R&#xca;T AUX COMPTES CHEQUES"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnInteretActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JButton" name="jButton3">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="CHARGER INT&#xc9;R&#xca;T AUX CREDITS"/>
+                  </Properties>
+                </Component>
+              </SubComponents>
             </Container>
           </SubComponents>
         </Container>

@@ -9,6 +9,7 @@ package ca.com.felipeoliveira.viewmodel;
 import ca.com.felipeoliveira.model.Client;
 import ca.com.felipeoliveira.model.Compte;
 import ca.com.felipeoliveira.model.CompteCheque;
+import ca.com.felipeoliveira.model.MargeDeCredit;
 import ca.com.felipeoliveira.model.Transaction;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -48,6 +49,28 @@ public class GererBD {
             stmt.execute(sql);
             
             System.out.println("Tabela clients cree");
+        }catch(SQLException ex){
+            System.err.println(ex.getMessage());
+        }
+        finally{
+            if(connecte) this.connexion.deconnecter();
+        }
+    }
+    
+    public void creerTableGuichet(){
+        String sql = "CREATE TABLE IF NOT EXISTS tbl_guichet(id INTEGER PRIMARY KEY AUTOINCREMENT,montant_disponible real,limite real)";
+        
+        //boolean pour verifier le succes dans la connexion 
+        boolean connecte = false;
+        
+        try{
+            connecte = this.connexion.connect();
+            
+            Statement stmt = this.connexion.statement();
+            
+            stmt.execute(sql);
+            
+            System.out.println("Tabela guichet cree");
         }catch(SQLException ex){
             System.err.println(ex.getMessage());
         }
@@ -120,6 +143,44 @@ public class GererBD {
         }
         return succes;
     }
+    
+    public boolean enregistrerLimiteCredit(String numeroCompte, int limite){
+        boolean succes = true;
+        boolean connecter = false;
+        String sql = "UPDATE tbl_comptes SET limite = " + limite + " WHERE numero = '" + numeroCompte + "';";
+        try{
+            connecter = this.connexion.connect();
+            Statement stmt = this.connexion.statement();
+            stmt.execute(sql);
+            
+        }catch(SQLException ex){
+            System.err.println(ex.getMessage());
+            succes = false;
+        }
+        finally{
+            if(connecter) this.connexion.deconnecter();
+        }
+        return succes;
+    }
+    
+    public boolean enregistrerSoldeGuichet(double solde){
+        boolean succes = true;
+        boolean connecter = false;
+        String sql = "UPDATE tbl_guichet SET montant_disponible = " + solde + " WHERE id = 1;";
+        try{
+            connecter = this.connexion.connect();
+            Statement stmt = this.connexion.statement();
+            stmt.execute(sql);
+            
+        }catch(SQLException ex){
+            System.err.println(ex.getMessage());
+            succes = false;
+        }
+        finally{
+            if(connecter) this.connexion.deconnecter();
+        }
+        return succes;
+    }
         
 // Methodes INSERT
     public boolean insererMargeCredit(String codeTitulaire){
@@ -140,7 +201,7 @@ public class GererBD {
         return succes;
     }
       
-    public boolean insererCompteCheque(String codeTitulaire, int type){
+    public boolean insererCompte(String codeTitulaire, int type){
         boolean succes = true;
         String numeroCompte = recupererNumeroCompte();
         Compte compte = new CompteCheque(numeroCompte, codeTitulaire);
@@ -256,6 +317,34 @@ public class GererBD {
           return succes;
       }
     
+    public boolean insererGuichet(){
+        boolean succes = true;
+          try{
+              connexion.connect();
+              String sql = "INSERT INTO tbl_guichet (montant_disponible, limite) VALUES(?,?);";
+              //On cree le preparedStatement
+               PreparedStatement preparedStatement = connexion.preparedStatement(sql);
+               preparedStatement.setDouble(1,10000);
+               preparedStatement.setDouble(2,20000);
+               
+               int result = preparedStatement.executeUpdate();
+
+                if(result == 1){
+                    System.out.println("Insert guichet ok");
+                }
+                else{
+                    System.out.println("Insert fail");
+                    succes = false;
+                }
+              
+          }catch(SQLException e){
+              e.printStackTrace();
+          }finally{
+              connexion.deconnecter();
+          }
+        return succes;
+    }
+    
 //Methodes SELECT
     public Client retournerClient(String codeClient){
         
@@ -363,6 +452,125 @@ public class GererBD {
            
            return numeroClient;
        }
+    
+    public MargeDeCredit retournerCredit(String codeClient){
+        String sql = "SELECT * from tbl_comptes where type = 4 AND codeTitulaire ='" + codeClient + "';";
+        
+        MargeDeCredit credit = null;
+        
+        //On ouvre la connexion sql
+           connexion.connect();
+           statement = connexion.statement();
+        try{
+               resultSet = statement.executeQuery(sql);
+               while(resultSet.next()){
+                   String numeroCompte = resultSet.getString("numero");
+                   int limite = resultSet.getInt("limite");
+                   double solde = resultSet.getDouble("solde");
+                   
+                    credit = new MargeDeCredit(numeroCompte,codeClient);
+                    credit.setLimite(limite);
+                    credit.setSolde(solde);
+               }
+               
+           }catch(SQLException e){
+               e.printStackTrace();
+           }
+           finally{
+               connexion.deconnecter();
+           }
+        
+        return credit;
+        
+    }
+    
+    public Guichet retournerGuichet(){
+        String sql = "SELECT * from tbl_guichet where id = 1;";
+        
+        Guichet guichet = null;
+        //On ouvre la connexion sql
+           connexion.connect();
+           statement = connexion.statement();
+        try{
+               resultSet = statement.executeQuery(sql);
+               while(resultSet.next()){
+                   double solde = resultSet.getDouble("montant_disponible");
+                   
+                    guichet = new Guichet(solde);
+               }
+               
+           }catch(SQLException e){
+               e.printStackTrace();
+           }
+           finally{
+               connexion.deconnecter();
+           }
+        
+        return guichet;
+        
+    }
+    
+    public List<CompteCheque> retournerListCheque(){
+        String sql = "SELECT * FROM tbl_comptes where type = 1";
+        
+        List<CompteCheque> cheques  = new ArrayList();
+        
+        //On ouvre la connexion sql
+           connexion.connect();
+           statement = connexion.statement();
+        try{
+               resultSet = statement.executeQuery(sql);
+               while(resultSet.next()){
+                   String numero = resultSet.getString("numero");
+                   String codeTitulaire = resultSet.getString("codeTitulaire");
+                   double solde = resultSet.getDouble("solde");
+                   
+                   CompteCheque cheque = new CompteCheque(numero, codeTitulaire);
+                   cheque.setSolde(solde);
+                   cheques.add(cheque);
+               }
+               
+           }catch(SQLException e){
+               e.printStackTrace();
+           }
+           finally{
+               connexion.deconnecter();
+           }
+        
+        return cheques;
+        
+    }
+    
+    public List<MargeDeCredit> retournerListCredit(){
+        String sql = "SELECT * FROM tbl_comptes where type = 4";
+        
+        List<MargeDeCredit> credits  = new ArrayList();
+        
+        //On ouvre la connexion sql
+           connexion.connect();
+           statement = connexion.statement();
+        try{
+               resultSet = statement.executeQuery(sql);
+               while(resultSet.next()){
+                   String numero = resultSet.getString("numero");
+                   String codeTitulaire = resultSet.getString("codeTitulaire");
+                   double solde = resultSet.getDouble("solde");
+                   
+                   MargeDeCredit credit = new MargeDeCredit(numero, codeTitulaire);
+                   credit.setSolde(solde);
+                   credits.add(credit);
+               }
+               
+           }catch(SQLException e){
+               e.printStackTrace();
+           }
+           finally{
+               connexion.deconnecter();
+           }
+        
+        return credits;
+        
+    }
     
     
 }
