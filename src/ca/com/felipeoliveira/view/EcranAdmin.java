@@ -13,6 +13,7 @@ import ca.com.felipeoliveira.model.MargeDeCredit;
 import ca.com.felipeoliveira.model.Transaction;
 import ca.com.felipeoliveira.viewmodel.ConnexionSQLite;
 import ca.com.felipeoliveira.viewmodel.GererBD;
+import ca.com.felipeoliveira.viewmodel.Guichet;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -35,14 +36,12 @@ public class EcranAdmin extends javax.swing.JFrame {
     List<CompteHypothecaire> hypothecaires = new ArrayList();
     List<Transaction> transactions;
     MargeDeCredit margeCredit;
-    
-    
     ConnexionSQLite connexion = new ConnexionSQLite();
     GererBD gererBD = new GererBD(connexion); 
     Statement statement = null;
     ResultSet resultSet = null;
-    
     String codeClient;
+    Guichet guichet;
     /**
      * Creates new form EcranAdmin
      */
@@ -52,6 +51,7 @@ public class EcranAdmin extends javax.swing.JFrame {
         btnModifierLimite.setEnabled(false);
         btnCreerCompte.setEnabled(false);
         btnPrelevementHypothecaire.setEnabled(false);
+        guichet = gererBD.retournerGuichet();
     }
 
     /**
@@ -115,7 +115,7 @@ public class EcranAdmin extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         lblCreditSolde = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        btnAjouterArgent = new javax.swing.JButton();
         btnInteret = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
 
@@ -566,7 +566,12 @@ public class EcranAdmin extends javax.swing.JFrame {
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 196));
 
-        jButton1.setText("AJOUTER $5000");
+        btnAjouterArgent.setText("AJOUTER $5000");
+        btnAjouterArgent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAjouterArgentActionPerformed(evt);
+            }
+        });
 
         btnInteret.setText("PAYER INTÉRÊT AUX COMPTES CHEQUES");
         btnInteret.addActionListener(new java.awt.event.ActionListener() {
@@ -583,7 +588,7 @@ public class EcranAdmin extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(52, 52, 52)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnAjouterArgent, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(86, 86, 86)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -596,7 +601,7 @@ public class EcranAdmin extends javax.swing.JFrame {
                 .addGap(86, 86, 86)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnInteret, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnAjouterArgent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(94, 94, 94)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(172, Short.MAX_VALUE))
@@ -789,6 +794,12 @@ public class EcranAdmin extends javax.swing.JFrame {
         }  
     }//GEN-LAST:event_btnInteretActionPerformed
 
+    private void btnAjouterArgentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAjouterArgentActionPerformed
+        boolean succes = guichet.setSoldePlus5k();
+        if(succes)
+            gererBD.enregistrerSoldeGuichet(guichet.getSolde());
+    }//GEN-LAST:event_btnAjouterArgentActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -955,6 +966,7 @@ public class EcranAdmin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAjouterArgent;
     private javax.swing.JButton btnAjouterClient;
     private javax.swing.JButton btnChercherClient;
     private javax.swing.JButton btnClientStatus;
@@ -964,7 +976,6 @@ public class EcranAdmin extends javax.swing.JFrame {
     private javax.swing.JButton btnPrelevementHypothecaire;
     private javax.swing.JComboBox<String> cbHypothecaires;
     private javax.swing.JComboBox<String> cbTypeCompteCreer;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

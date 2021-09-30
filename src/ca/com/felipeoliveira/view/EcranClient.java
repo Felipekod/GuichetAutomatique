@@ -7,8 +7,10 @@ package ca.com.felipeoliveira.view;
 
 import ca.com.felipeoliveira.model.*;
 import ca.com.felipeoliveira.viewmodel.ConnexionSQLite;
+import ca.com.felipeoliveira.viewmodel.Frames;
 import ca.com.felipeoliveira.viewmodel.GererBD;
 import ca.com.felipeoliveira.viewmodel.Guichet;
+import java.awt.Frame;
 import java.lang.StringBuilder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,30 +38,23 @@ public class EcranClient extends javax.swing.JFrame {
     final int CLAVIER_NUMERIQUE_RETRAIT = 1;
     final int CLAVIER_NUMERIQUE_TRANSFERT = 2;
     final int CLAVIER_NUMERIQUE_PAIEMENT = 3;
-    
     final int TRANSACTION_DEPOT = 1;
     final int TRANSACTION_RETRAIT = 2;
     final int TRANSACTION_TRANSFERT = 3;
     final int TRANSACTION_FACTURE = 4;
-    
     final double PAIEMENT_FACTURE_TAUX = 1.25;
-    
     final double RETRAIT_MAXIMUN = 1000.0;
-    
     List<CompteCheque> cheques = new ArrayList();
     List<CompteEpargne> epargnes = new ArrayList();
     List<CompteHypothecaire> hypothecaires = new ArrayList();
     MargeDeCredit margeCredit;
     Guichet guichet;
-    
-    
+    Frames frame =  new Frames();
     ConnexionSQLite connexion = new ConnexionSQLite();
     GererBD gererBD = new GererBD(connexion); 
     Statement statement = null;
     ResultSet resultSet = null;
-    
     String codeClient;
-    
     int clavierNumeriqueDestin = CLAVIER_NUMERIQUE_DEPOT;
     public EcranClient(String codeClient) {
         initComponents();
@@ -741,6 +736,7 @@ public class EcranClient extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_btnDepotActionPerformed
+    
     private int getIndexComptesCheques(String numeroCompte, List<CompteCheque>comptes){
          int numero = 0;
         for(int i = 0; i < comptes.size(); i++){
@@ -770,6 +766,7 @@ public class EcranClient extends javax.swing.JFrame {
         }
         return numero;
     }
+    
     private void btnRetraitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetraitActionPerformed
         //On recupère la valeur saisi
         String valeurSaisi = txtRetrait.getText().replace("$", "").replace(",", "");
@@ -780,13 +777,14 @@ public class EcranClient extends javax.swing.JFrame {
         boolean soldeGuichetDisponible = (guichet.getSolde() >= valeur);
         
         if(!soldeGuichetDisponible){
-            //message pas de solde 
+            //Si le solde du guiché n'est pas sufisante on afiche la fenetre
+            frame.soldeGuichetInsufisant();
         }
+        if(!multipleDeDix) frame.exceptionRetrait();
        //On efecture le recrait si la valeur saisi est dans la limite et est multiple de dix
         if(multipleDeDix && retraitDansLaLimite && soldeGuichetDisponible){
             //On recupere la compte source
             String compteSourceItemRetrait = cbRetraitCompteSource.getSelectedItem().toString();
-       
             //On identifie le type de la compte et le numero
             String[] compteChoisi = compteSourceItemRetrait.split(" ");
             String numeroCompteSource = compteChoisi[1];
@@ -806,6 +804,10 @@ public class EcranClient extends javax.swing.JFrame {
                     //On met à jour le ComboBox
                     mettreAJourCB();
                     System.out.println("Retrait succes");
+                    //On met a jour le guichet
+                    guichet.retrait(valeur);
+                    gererBD.enregistrerSoldeGuichet(guichet.getSolde());
+                    System.out.println(guichet.getSolde());
                 }
             }
             else if(compteType.equals("Épargne") ){
@@ -826,13 +828,6 @@ public class EcranClient extends javax.swing.JFrame {
                 }
             }
         }
-        else{
-            //TODO si nao é multiplo de 10 ou até 1000
-        }
-        
-        
-        
-                
     }//GEN-LAST:event_btnRetraitActionPerformed
 
     private void clavierNumeriqueClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clavierNumeriqueClick
@@ -877,12 +872,14 @@ public class EcranClient extends javax.swing.JFrame {
     private void clearEntryClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearEntryClick
         remetreTxtField();
     }//GEN-LAST:event_clearEntryClick
+    
     private void remetreTxtField(){
         txtDepot.setText("$00.0");
         txtRetrait.setText("$00.0");
         txtTransfert.setText("$00.0");
         txtPaiement.setText("$00.0");
     }
+    
     private void txtDepotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDepotActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDepotActionPerformed
@@ -1108,6 +1105,7 @@ public class EcranClient extends javax.swing.JFrame {
         remplirCbRetrait();
         remplirCbPaiement();
     }
+    
     private void remplirCbTransfert(){
         //On vide le CB
         cbTransfertCompteSource.removeAllItems();
@@ -1121,6 +1119,7 @@ public class EcranClient extends javax.swing.JFrame {
         ajouterCbHypothecaires(hypothecaires.size(), cbTransfertCompteDestin);
         AjouterCbMargeCredit(margeCredit, cbTransfertCompteDestin);
     }
+    
     private void remplirCbRetrait(){
         //On vide le CB
         cbRetraitCompteSource.removeAllItems();
@@ -1130,6 +1129,7 @@ public class EcranClient extends javax.swing.JFrame {
         //On ajoute les comptes epargnes
         ajouterCbEpargnes(epargnes.size(), cbRetraitCompteSource);
     }
+    
     private void remplirCbDepot(){
         //On vide le CB
         cbDepotCompteDestin.removeAllItems();
@@ -1210,7 +1210,7 @@ public class EcranClient extends javax.swing.JFrame {
         }
     }
     
-        private void mettreAJourTxtField(JTextField textField, String numeroSaisi, String txtDepotSaisie){
+    private void mettreAJourTxtField(JTextField textField, String numeroSaisi, String txtDepotSaisie){
         //On enleve le caractère special du NumberFormat
         txtDepotSaisie = txtDepotSaisie.replace("$", "").replace(".", "").replace(",", "") + numeroSaisi;
         String txtRemetrePoint = new StringBuilder(txtDepotSaisie).insert(txtDepotSaisie.length()-2, ".").toString();

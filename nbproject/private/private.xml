@@ -5,12 +5,8 @@
         <group>
             <file>file:/Users/felipeoliveira/NetBeansProjects/GuichetAutomatique/src/ca/com/felipeoliveira/view/EcranClient.java</file>
             <file>file:/Users/felipeoliveira/NetBeansProjects/GuichetAutomatique/src/ca/com/felipeoliveira/view/EcranAdmin.java</file>
-            <file>file:/Users/felipeoliveira/NetBeansProjects/GuichetAutomatique/src/ca/com/felipeoliveira/model/CompteHypothecaire.java</file>
-            <file>file:/Users/felipeoliveira/NetBeansProjects/GuichetAutomatique/src/ca/com/felipeoliveira/GuichetAutomatique.java</file>
-            <file>file:/Users/felipeoliveira/NetBeansProjects/GuichetAutomatique/src/ca/com/felipeoliveira/viewmodel/GererBD.java</file>
+            <file>file:/Users/felipeoliveira/NetBeansProjects/GuichetAutomatique/src/ca/com/felipeoliveira/viewmodel/Frames.java</file>
             <file>file:/Users/felipeoliveira/NetBeansProjects/GuichetAutomatique/src/ca/com/felipeoliveira/viewmodel/Guichet.java</file>
-            <file>file:/Users/felipeoliveira/NetBeansProjects/GuichetAutomatique/src/ca/com/felipeoliveira/model/Transaction.java</file>
-            <file>file:/Users/felipeoliveira/NetBeansProjects/GuichetAutomatique/src/ca/com/felipeoliveira/model/CompteCheque.java</file>
             <file>file:/Users/felipeoliveira/NetBeansProjects/GuichetAutomatique/src/ca/com/felipeoliveira/model/MargeDeCredit.java</file>
         </group>
     </open-files>

@@ -844,7 +844,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
-                          <Component id="jButton1" min="-2" pref="344" max="-2" attributes="0"/>
+                          <Component id="btnAjouterArgent" min="-2" pref="344" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="86" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="jButton3" max="32767" attributes="0"/>
@@ -860,7 +860,7 @@
                           <EmptySpace min="-2" pref="86" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="btnInteret" pref="145" max="32767" attributes="0"/>
-                              <Component id="jButton1" max="32767" attributes="0"/>
+                              <Component id="btnAjouterArgent" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="94" max="-2" attributes="0"/>
                           <Component id="jButton3" min="-2" pref="141" max="-2" attributes="0"/>
@@ -870,10 +870,13 @@
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JButton" name="jButton1">
+                <Component class="javax.swing.JButton" name="btnAjouterArgent">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="AJOUTER $5000"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAjouterArgentActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnInteret">
                   <Properties>

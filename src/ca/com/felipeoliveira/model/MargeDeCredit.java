@@ -5,13 +5,17 @@
  */
 package ca.com.felipeoliveira.model;
 
+import ca.com.felipeoliveira.viewmodel.Frames;
+import javax.swing.JFrame;
+
 /**
  *
  * @author felipeoliveira
  */
 public class MargeDeCredit extends Compte {
 
-     private double limite = 1000;
+    private double limite = 1000;
+    Frames frame = new Frames();
     
     public MargeDeCredit(String numero, String codeTitulaire){
         super(numero, codeTitulaire, 4);
@@ -44,6 +48,9 @@ public class MargeDeCredit extends Compte {
         {
             succes = false;
             System.out.println("Limite atteint dans la marge de credit");
+            frame.limiteCreditAtteint();
+            
+        
         }
         return succes;
     }
