@@ -395,6 +395,8 @@ public class Login extends javax.swing.JFrame {
                 }
                 else{
                     if(nipSaisi.equalsIgnoreCase(NIP)){
+                        query = "UPDATE tbl_clients SET essaieLogin = 0 WHERE codeClient = '"+ codeClientSaisi + "';";
+                        statement.execute(query);
                         //On initialise l'ecranClient
                         EcranClient ecranClient = new EcranClient(codeClientSaisi);
                         ecranClient.setVisible(true);

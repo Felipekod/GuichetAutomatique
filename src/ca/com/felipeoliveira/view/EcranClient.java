@@ -908,49 +908,61 @@ public class EcranClient extends javax.swing.JFrame {
             String numeroCompteDestin = compteDestinChoisi[1];
             String compteDestinType = compteDestinChoisi[0];
 
-            //On recupere la compte Cheque source et de la compte destin
+            
+            
+            //On recupere la compte Cheque source et de la compte source
             indexCompteSource = getIndexComptesCheques(numeroCompteSource, cheques);
             
             //on Recupère la compte source
             CompteCheque compteSourceTransfert = cheques.get(indexCompteSource);             
+            //On verifie si la compte source est la meme que la compte destin
+            boolean memeCompte = (numeroCompteSource.equals(numeroCompteDestin));
+            if(memeCompte){
+                //on avise l'utilisateur qu'il doit choisir des comptes differentes pour la transaction
+                frame.memeCompteTransaction();
+            }
+            else{
+                    //On effectue le transfert dans la compte.
+                if(compteDestinType.equals("Cheque")){
+                    //On recupere la compte Cheque source et de la compte destin
+                    indexCompteDestin = getIndexComptesCheques(numeroCompteDestin, cheques);
+                    CompteCheque compteDestin = cheques.get(indexCompteDestin);
+                    succes = compteSourceTransfert.transfertSolde(compteDestin, valeur);
+                    soldeCompteDestin = compteDestin.getSolde();
+                }
+                else if(compteDestinType.equals("Épargne")){
+                    CompteEpargne compteDestin = epargnes.get(indexCompteDestin);
+                    succes = compteSourceTransfert.transfertSolde(compteDestin, valeur);
+                    soldeCompteDestin = compteDestin.getSolde();
+                }
+                else if(compteDestinType.equals("Hypothecaire")){
+                    CompteHypothecaire compteDestin = hypothecaires.get(indexCompteDestin);
+                    succes = compteSourceTransfert.transfertSolde(compteDestin, valeur);
+                    soldeCompteDestin = compteDestin.getSolde();
+                }
+                else if (compteDestinType.equals("Credit")){
+                    MargeDeCredit compteDestin = margeCredit;
+                    if(margeCredit.getSolde() > 0){
+                        succes = compteSourceTransfert.transfertSolde(compteDestin, valeur);
+                        soldeCompteDestin = compteDestin.getSolde();
+                    }
+                }
+                // Si transaction a été bien effectuée, on l'enregistre dans la BD.
+                if(succes){
+                        //On recupere la solde de la compte source
+                        soldeCompteSource = compteSourceTransfert.getSolde();
 
-            //On effectue le transfert dans la compte.
-            if(compteDestinType.equals("Cheque")){
-                CompteCheque compteDestin = cheques.get(indexCompteDestin);
-                succes = compteSourceTransfert.transfertSolde(compteDestin, valeur);
-                soldeCompteDestin = compteDestin.getSolde();
+                        //On enregistre les soldes des comptes source et destin.
+                        gererBD.enregistrerSolde(numeroCompteSource, soldeCompteSource);
+                        gererBD.enregistrerSolde(numeroCompteDestin, soldeCompteDestin);
+                        //On enregistre la transaction
+                        gererBD.insererTransaction(TRANSACTION_TRANSFERT, numeroCompteSource, numeroCompteDestin, valeur);
+                        //On met à jour le ComboBox
+                        mettreAJourCB();
+                        System.out.println("Transaction succes");
+                }
             }
-            else if(compteDestinType.equals("Épargne")){
-                CompteEpargne compteDestin = epargnes.get(indexCompteDestin);
-                succes = compteSourceTransfert.transfertSolde(compteDestin, valeur);
-                soldeCompteDestin = compteDestin.getSolde();
-            }
-            else if(compteDestinType.equals("Hypothecaire")){
-                CompteHypothecaire compteDestin = hypothecaires.get(indexCompteDestin);
-                succes = compteSourceTransfert.transfertSolde(compteDestin, valeur);
-                soldeCompteDestin = compteDestin.getSolde();
-            }
-            else if (compteDestinType.equals("Credit")){
-                MargeDeCredit compteDestin = margeCredit;
-                succes = compteSourceTransfert.transfertSolde(compteDestin, valeur);
-                soldeCompteDestin = compteDestin.getSolde();
-            }
-            // Si transaction a été bien effectuée, on l'enregistre dans la BD.
-            if(succes){
-                    //On recupere la solde de la compte source
-                    soldeCompteSource = compteSourceTransfert.getSolde();
-                    
-                    //On enregistre les soldes des comptes source et destin.
-                    gererBD.enregistrerSolde(numeroCompteSource, soldeCompteSource);
-                    gererBD.enregistrerSolde(numeroCompteDestin, soldeCompteDestin);
-                    //On enregistre la transaction
-                    gererBD.insererTransaction(TRANSACTION_TRANSFERT, numeroCompteSource, numeroCompteDestin, valeur);
-                    //On met à jour le ComboBox
-                    mettreAJourCB();
-                    System.out.println("Transaction succes");
-            }
-           
-        
+            
     }//GEN-LAST:event_btnTransfertActionPerfomed
 
     private void btnPayerActionPerfomed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayerActionPerfomed
@@ -963,7 +975,7 @@ public class EcranClient extends javax.swing.JFrame {
        //On efecture le recrait si la valeur saisi est dans la limite et est multiple de dix
        
             //On recupere la compte source
-            String compteSourceItemRetrait = cbRetraitCompteSource.getSelectedItem().toString();
+            String compteSourceItemRetrait = cbPaiementCompteSource.getSelectedItem().toString();
        
             //On identifie le type de la compte et le numero
             String[] compteChoisi = compteSourceItemRetrait.split(" ");

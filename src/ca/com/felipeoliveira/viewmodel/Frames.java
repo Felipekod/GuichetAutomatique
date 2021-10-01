@@ -48,4 +48,9 @@ public class Frames {
         JOptionPane.showMessageDialog(frame,
         "Vouz devez saisir une valeur numerique entière" );
     }
+    
+    public void memeCompteTransaction(){
+        JOptionPane.showMessageDialog(frame,
+        "VVoulez choisir une compte destin differente de la compte source." );
+    }
 }
