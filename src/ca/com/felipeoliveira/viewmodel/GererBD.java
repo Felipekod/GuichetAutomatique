@@ -182,6 +182,24 @@ public class GererBD {
         return succes;
     }
         
+   public boolean loginClient(int clientStatus, String codeClient){
+        boolean succes = true;
+        boolean connecter = false;
+        String sql = "UPDATE tbl_clients SET essaieLogin = " + clientStatus + " WHERE codeClient = '" + codeClient + "';";
+        try{
+            connecter = this.connexion.connect();
+            Statement stmt = this.connexion.statement();
+            stmt.execute(sql);
+            
+        }catch(SQLException ex){
+            System.err.println(ex.getMessage());
+            succes = false;
+        }
+        finally{
+            if(connecter) this.connexion.deconnecter();
+        }
+        return succes;
+    }
 // Methodes INSERT
     public boolean insererMargeCredit(String codeTitulaire){
         boolean succes = true;

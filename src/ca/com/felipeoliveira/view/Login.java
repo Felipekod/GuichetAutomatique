@@ -6,6 +6,7 @@
 package ca.com.felipeoliveira.view;
 
 import ca.com.felipeoliveira.viewmodel.ConnexionSQLite;
+import ca.com.felipeoliveira.viewmodel.Frames;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,6 +30,7 @@ public class Login extends javax.swing.JFrame {
     Statement statement = null;
     ResultSet resultSet = null;
     boolean compteBloquee = false;
+    Frames frame = new Frames();
     
     
     public Login() {
@@ -387,8 +389,9 @@ public class Login extends javax.swing.JFrame {
             {
                 int essaieLogin = resultSet.getInt("essaieLogin");
                 String NIP = resultSet.getString("nip");
-                if(essaieLogin > 3){
-                    //CompteBloquee
+                if(essaieLogin > 2){
+                    //Compte bloquee
+                     frame.compteBloquee();
                 }
                 else{
                     if(nipSaisi.equalsIgnoreCase(NIP)){

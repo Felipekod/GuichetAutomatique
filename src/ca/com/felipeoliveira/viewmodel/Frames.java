@@ -38,4 +38,14 @@ public class Frames {
         JOptionPane.showMessageDialog(frame,
         "$20000  atteint!" );
     }
+    
+    public void compteBloquee(){
+        JOptionPane.showMessageDialog(frame,
+        "Vous avez échouez trois fois le login, voulez contacter la banque." );
+    }
+    
+    public void valeurIntLimiteCredit(){
+        JOptionPane.showMessageDialog(frame,
+        "Vouz devez saisir une valeur numerique entière" );
+    }
 }

@@ -12,6 +12,7 @@ import ca.com.felipeoliveira.model.CompteHypothecaire;
 import ca.com.felipeoliveira.model.MargeDeCredit;
 import ca.com.felipeoliveira.model.Transaction;
 import ca.com.felipeoliveira.viewmodel.ConnexionSQLite;
+import ca.com.felipeoliveira.viewmodel.Frames;
 import ca.com.felipeoliveira.viewmodel.GererBD;
 import ca.com.felipeoliveira.viewmodel.Guichet;
 import java.sql.ResultSet;
@@ -31,7 +32,8 @@ import javax.swing.JComboBox;
 public class EcranAdmin extends javax.swing.JFrame {
 
     
-    List<CompteCheque> cheques;
+    List<CompteCheque> cheques = new ArrayList();
+    List<CompteCheque> chequesBanque;
     List<CompteEpargne> epargnes = new ArrayList();
     List<CompteHypothecaire> hypothecaires = new ArrayList();
     List<Transaction> transactions;
@@ -42,6 +44,8 @@ public class EcranAdmin extends javax.swing.JFrame {
     ResultSet resultSet = null;
     String codeClient;
     Guichet guichet;
+    Client client;
+    Frames frame = new Frames();
     /**
      * Creates new form EcranAdmin
      */
@@ -291,6 +295,11 @@ public class EcranAdmin extends javax.swing.JFrame {
         lblTelephoneClient.setText("Telephone");
 
         btnClientStatus.setText("CLIENT ACTIF");
+        btnClientStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClientStatusActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -658,7 +667,7 @@ public class EcranAdmin extends javax.swing.JFrame {
     private void btnChercherClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChercherClientActionPerformed
         //On recupere le code saisi
         String codeClientRecherche = txtCodeClientChercher.getText();
-        Client client = gererBD.retournerClient(codeClientRecherche);
+        client = gererBD.retournerClient(codeClientRecherche);
         if(client != null){
             listTransactions.setEnabled(true);
             //On active les boutons
@@ -737,7 +746,7 @@ public class EcranAdmin extends javax.swing.JFrame {
         boolean limiteEstInt = isInt(valeurSaisi);
         if(limiteEstInt){
             int nvLimite = Integer.parseInt(valeurSaisi);
-            boolean limiteChange = gererBD.enregistrerLimiteCredit(codeClient, nvLimite);
+            boolean limiteChange = gererBD.enregistrerLimiteCredit(margeCredit.getNumero(), nvLimite);
             if(limiteChange){
                 lblLimite.setText(valeurSaisi);
                 margeCredit.setLimite(nvLimite);
@@ -746,6 +755,7 @@ public class EcranAdmin extends javax.swing.JFrame {
         }
         else{
             // Valeur nom int
+            frame.valeurIntLimiteCredit();
         }
         
     }//GEN-LAST:event_btnModifierLimiteActionPerformed
@@ -786,11 +796,11 @@ public class EcranAdmin extends javax.swing.JFrame {
 
     private void btnInteretActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInteretActionPerformed
         //On recupere la liste des comptes cheques
-        cheques = gererBD.retournerListCheque();
-        int chequesSize = cheques.size();
+        chequesBanque = gererBD.retournerListCheque();
+        int chequesSize = chequesBanque.size();
         
         for(int i = 0; i < chequesSize; i++){
-            cheques.get(i).payerInteret(gererBD);
+            chequesBanque.get(i).payerInteret(gererBD);
         }  
     }//GEN-LAST:event_btnInteretActionPerformed
 
@@ -799,6 +809,22 @@ public class EcranAdmin extends javax.swing.JFrame {
         if(succes)
             gererBD.enregistrerSoldeGuichet(guichet.getSolde());
     }//GEN-LAST:event_btnAjouterArgentActionPerformed
+
+    private void btnClientStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClientStatusActionPerformed
+        //Si le client est bloqué on le debloque
+        if(client.getEsssaieLogin() >= 3){
+            client.setEssaieLogin(0);
+            btnClientStatus.setText("Client actif");
+            gererBD.loginClient(0, codeClient);
+        }
+        //Si le client n'est pas bloqué on le bloque
+        else{
+            client.setEssaieLogin(4);
+            btnClientStatus.setText("Client bloqué");
+            gererBD.loginClient(4, codeClient);
+        }
+        
+    }//GEN-LAST:event_btnClientStatusActionPerformed
 
     /**
      * @param args the command line arguments
@@ -837,7 +863,7 @@ public class EcranAdmin extends javax.swing.JFrame {
     
     //METHODES 
     
-        private int getIndexComptesHypothecaire(String numeroCompte, List<CompteHypothecaire>comptes){
+    private int getIndexComptesHypothecaire(String numeroCompte, List<CompteHypothecaire>comptes){
              int numero = 0;
             for(int i = 0; i < comptes.size(); i++){
                 if(numeroCompte.equals(comptes.get(i).getNumero())){
@@ -847,7 +873,7 @@ public class EcranAdmin extends javax.swing.JFrame {
             return numero;
         }
     
-        private boolean isInt(String str) { 
+    private boolean isInt(String str) { 
           try {  
             Integer.parseInt(str);  
             return true;
@@ -856,7 +882,7 @@ public class EcranAdmin extends javax.swing.JFrame {
           }  
         }
         
-        private boolean isDouble(String str) { 
+    private boolean isDouble(String str) { 
           try {  
             Double.parseDouble(str);  
             return true;
@@ -865,11 +891,14 @@ public class EcranAdmin extends javax.swing.JFrame {
           }  
         }
     
-        private void remplirComptes(){
+    private void remplirComptes(){
         //On vide les listes des comptes
-        cheques.clear();
-        epargnes.clear();
-        hypothecaires.clear();
+        if(cheques != null)
+            cheques.clear();
+        if(epargnes != null)
+            epargnes.clear();
+        if(hypothecaires != null)
+            hypothecaires.clear();
         
         //On ouvre la connexion sql
         connexion.connect();
