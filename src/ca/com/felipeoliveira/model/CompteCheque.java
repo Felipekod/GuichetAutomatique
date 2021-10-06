@@ -103,7 +103,7 @@ public class CompteCheque extends Compte{
     
     public boolean transfertSolde(MargeDeCredit compteDestin, double valeur){
         boolean succes = true;
-        if(this.solde > valeur)
+        if(this.solde >= valeur)
         {
             //On verifie la solde de credit de la compte destin
             double soldeCredit = compteDestin.getSolde();

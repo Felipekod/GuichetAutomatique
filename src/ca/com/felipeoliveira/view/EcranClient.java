@@ -62,6 +62,11 @@ public class EcranClient extends javax.swing.JFrame {
         remplirComptes();
         mettreAJourCB();
         guichet = gererBD.retournerGuichet();
+        if(margeCredit != null){
+            lblMargeCredit1.setText("Solde marge credit: " + formaterCad(margeCredit.getSolde()));
+            lblMargeCredit2.setText("Solde marge credit: " + formaterCad(margeCredit.getSolde()));
+        }
+            
     }
 
     /**
@@ -101,6 +106,7 @@ public class EcranClient extends javax.swing.JFrame {
         lblCompteDestin2 = new javax.swing.JLabel();
         cbRetraitCompteSource = new javax.swing.JComboBox<>();
         btnRetrait = new javax.swing.JButton();
+        lblMargeCredit1 = new javax.swing.JLabel();
         tabTransfert = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         lblBoxTransfert = new javax.swing.JLabel();
@@ -119,6 +125,8 @@ public class EcranClient extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         cbPaiementCompteSource = new javax.swing.JComboBox<>();
         lblCompteSource1 = new javax.swing.JLabel();
+        lblMargeCredit2 = new javax.swing.JLabel();
+        lblBoxTransfert1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -263,14 +271,14 @@ public class EcranClient extends javax.swing.JFrame {
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.setBackground(new java.awt.Color(192, 192, 192));
+        jTabbedPane1.setBackground(new java.awt.Color(225, 225, 255));
         jTabbedPane1.setForeground(new java.awt.Color(51, 0, 255));
         jTabbedPane1.setToolTipText("");
         jTabbedPane1.setFont(new java.awt.Font("Lucida Grande", 0, 20)); // NOI18N
 
-        tabDepot.setBackground(new java.awt.Color(218, 218, 218));
+        tabDepot.setBackground(new java.awt.Color(225, 225, 255));
 
-        jPanel2.setBackground(new java.awt.Color(222, 222, 222));
+        jPanel2.setBackground(new java.awt.Color(216, 216, 254));
 
         lblBoxDepot.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
         lblBoxDepot.setForeground(new java.awt.Color(102, 102, 102));
@@ -300,28 +308,29 @@ public class EcranClient extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cbDepotCompteDestin, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(lblBoxDepot)
-                                .addGap(71, 71, 71))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(lblCompteDestin1)
-                                .addGap(43, 43, 43))))
+                                .addGap(0, 62, Short.MAX_VALUE)
+                                .addComponent(txtDepot, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(57, 57, 57))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbDepotCompteDestin, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(txtDepot, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 12, Short.MAX_VALUE)))
-                        .addContainerGap())))
+                                .addGap(129, 129, 129)
+                                .addComponent(lblBoxDepot))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(83, 83, 83)
+                                .addComponent(btnDepot)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(btnDepot)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(104, 104, 104)
+                .addComponent(lblCompteDestin1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -336,31 +345,31 @@ public class EcranClient extends javax.swing.JFrame {
                 .addComponent(cbDepotCompteDestin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnDepot, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout tabDepotLayout = new javax.swing.GroupLayout(tabDepot);
         tabDepot.setLayout(tabDepotLayout);
         tabDepotLayout.setHorizontalGroup(
             tabDepotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(tabDepotLayout.createSequentialGroup()
-                .addGap(124, 124, 124)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabDepotLayout.createSequentialGroup()
+                .addContainerGap(86, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(150, Short.MAX_VALUE))
+                .addGap(81, 81, 81))
         );
         tabDepotLayout.setVerticalGroup(
             tabDepotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tabDepotLayout.createSequentialGroup()
-                .addGap(130, 130, 130)
+                .addGap(136, 136, 136)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(185, Short.MAX_VALUE))
+                .addContainerGap(174, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("DÉPÔT", tabDepot);
 
-        tabRetrait.setBackground(new java.awt.Color(218, 218, 218));
+        tabRetrait.setBackground(new java.awt.Color(225, 225, 255));
 
-        jPanel3.setBackground(new java.awt.Color(222, 222, 222));
+        jPanel3.setBackground(new java.awt.Color(216, 216, 254));
 
         lblBoxDepot1.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
         lblBoxDepot1.setForeground(new java.awt.Color(102, 102, 102));
@@ -385,33 +394,42 @@ public class EcranClient extends javax.swing.JFrame {
             }
         });
 
+        lblMargeCredit1.setForeground(new java.awt.Color(255, 51, 51));
+        lblMargeCredit1.setText(".");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(103, 103, 103)
+                .addComponent(lblCompteDestin2)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                                .addComponent(lblBoxDepot1)
-                                .addGap(71, 71, 71))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                                .addComponent(lblCompteDestin2)
-                                .addGap(43, 43, 43))))
                     .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(78, 78, 78)
+                                .addComponent(btnRetrait))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(69, 69, 69)
+                                .addComponent(txtRetrait, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 64, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cbRetraitCompteSource, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(txtRetrait, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap())))
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(btnRetrait)
-                .addGap(0, 0, Short.MAX_VALUE))
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addGap(6, 6, 6)
+                                        .addComponent(lblMargeCredit1))
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addGap(129, 129, 129)
+                                        .addComponent(lblBoxDepot1)))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -424,26 +442,28 @@ public class EcranClient extends javax.swing.JFrame {
                 .addComponent(lblCompteDestin2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cbRetraitCompteSource, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblMargeCredit1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addComponent(btnRetrait, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addGap(25, 25, 25))
         );
 
         javax.swing.GroupLayout tabRetraitLayout = new javax.swing.GroupLayout(tabRetrait);
         tabRetrait.setLayout(tabRetraitLayout);
         tabRetraitLayout.setHorizontalGroup(
             tabRetraitLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(tabRetraitLayout.createSequentialGroup()
-                .addGap(127, 127, 127)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabRetraitLayout.createSequentialGroup()
+                .addContainerGap(89, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(159, Short.MAX_VALUE))
+                .addGap(70, 70, 70))
         );
         tabRetraitLayout.setVerticalGroup(
             tabRetraitLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tabRetraitLayout.createSequentialGroup()
-                .addGap(114, 114, 114)
+                .addGap(117, 117, 117)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(183, Short.MAX_VALUE))
+                .addContainerGap(147, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("RETRAIT", tabRetrait);
@@ -480,22 +500,6 @@ public class EcranClient extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(33, 33, 33)
-                        .addComponent(txtTransfert, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(80, 80, 80)
-                        .addComponent(cbTransfertCompteDestin, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(80, 80, 80)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbTransfertCompteSource, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(65, 65, 65)
-                                .addComponent(lblBoxTransfert)))))
-                .addContainerGap(43, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(btnTransferer, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -508,6 +512,18 @@ public class EcranClient extends javax.swing.JFrame {
                 .addGap(133, 133, 133)
                 .addComponent(lblCompteSource)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(145, 145, 145)
+                        .addComponent(lblBoxTransfert))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cbTransfertCompteSource, 0, 351, Short.MAX_VALUE)
+                            .addComponent(txtTransfert, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbTransfertCompteDestin, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -548,7 +564,9 @@ public class EcranClient extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("TRANSFERT", tabTransfert);
 
-        tabPaiement.setBackground(new java.awt.Color(218, 218, 218));
+        tabPaiement.setBackground(new java.awt.Color(225, 225, 255));
+
+        jPanel5.setBackground(new java.awt.Color(216, 216, 254));
 
         jLabel1.setText("Code de la Facture");
 
@@ -571,43 +589,62 @@ public class EcranClient extends javax.swing.JFrame {
         lblCompteSource1.setForeground(new java.awt.Color(110, 110, 110));
         lblCompteSource1.setText("Compte source");
 
+        lblMargeCredit2.setForeground(new java.awt.Color(255, 51, 51));
+        lblMargeCredit2.setText(".");
+
+        lblBoxTransfert1.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        lblBoxTransfert1.setForeground(new java.awt.Color(102, 102, 102));
+        lblBoxTransfert1.setText("Paiement");
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(113, 113, 113)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(120, Short.MAX_VALUE))
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(144, 144, 144)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(150, 150, 150)
-                .addComponent(jLabel2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cbPaiementCompteSource, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtPaiement, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(113, 113, 113)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(144, 144, 144)
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(150, 150, 150)
+                        .addComponent(jLabel2))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(137, 137, 137)
+                        .addComponent(lblCompteSource1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addContainerGap(43, Short.MAX_VALUE)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(lblMargeCredit2, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cbPaiementCompteSource, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(42, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtPaiement, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(81, 81, 81))
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(137, 137, 137)
-                .addComponent(lblCompteSource1)
+                .addGap(149, 149, 149)
+                .addComponent(lblBoxTransfert1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap(95, Short.MAX_VALUE)
+                .addGap(25, 25, 25)
+                .addComponent(lblBoxTransfert1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addComponent(lblCompteSource1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(cbPaiementCompteSource, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblMargeCredit2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -646,19 +683,20 @@ public class EcranClient extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(38, 38, 38)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37)
+                .addGap(46, 46, 46)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(120, Short.MAX_VALUE))
+                .addContainerGap(111, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(81, 81, 81))
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(39, 39, 39)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(175, 175, 175)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(54, Short.MAX_VALUE))
         );
 
@@ -808,6 +846,10 @@ public class EcranClient extends javax.swing.JFrame {
                     guichet.retrait(valeur);
                     gererBD.enregistrerSoldeGuichet(guichet.getSolde());
                     System.out.println(guichet.getSolde());
+                    if(margeCredit != null){
+                        lblMargeCredit1.setText("Solde marge credit: " + formaterCad(margeCredit.getSolde()));
+                        lblMargeCredit2.setText("Solde marge credit: " + formaterCad(margeCredit.getSolde()));
+                    }
                 }
             }
             else if(compteType.equals("Épargne") ){
@@ -945,6 +987,8 @@ public class EcranClient extends javax.swing.JFrame {
                     if(margeCredit.getSolde() > 0){
                         succes = compteSourceTransfert.transfertSolde(compteDestin, valeur);
                         soldeCompteDestin = compteDestin.getSolde();
+                        lblMargeCredit1.setText("Solde marge credit: " + formaterCad(margeCredit.getSolde()));
+                        lblMargeCredit2.setText("Solde marge credit: " + formaterCad(margeCredit.getSolde()));
                     }
                 }
                 // Si transaction a été bien effectuée, on l'enregistre dans la BD.
@@ -1015,6 +1059,10 @@ public class EcranClient extends javax.swing.JFrame {
                     //On met à jour le ComboBox
                     mettreAJourCB();
                     System.out.println("Facture succes");
+                    if(margeCredit != null){
+                        lblMargeCredit1.setText("Solde marge credit: " + formaterCad(margeCredit.getSolde()));
+                        lblMargeCredit2.setText("Solde marge credit: " + formaterCad(margeCredit.getSolde()));
+                    }
                 }
             }
             
@@ -1234,6 +1282,14 @@ public class EcranClient extends javax.swing.JFrame {
         textField.setText(fmt.format(numeroAAficher));
         
     }
+    
+    public String formaterCad(double valeur){
+        //On utilise le NumberFormat pour afficher la valeur en dolar
+            Locale locale = new Locale("en", "US");
+            NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
+            String soldeFormate = fmt.format(valeur);
+            return soldeFormate;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn0;
@@ -1269,11 +1325,14 @@ public class EcranClient extends javax.swing.JFrame {
     private javax.swing.JLabel lblBoxDepot;
     private javax.swing.JLabel lblBoxDepot1;
     private javax.swing.JLabel lblBoxTransfert;
+    private javax.swing.JLabel lblBoxTransfert1;
     private javax.swing.JLabel lblCompteDestin;
     private javax.swing.JLabel lblCompteDestin1;
     private javax.swing.JLabel lblCompteDestin2;
     private javax.swing.JLabel lblCompteSource;
     private javax.swing.JLabel lblCompteSource1;
+    private javax.swing.JLabel lblMargeCredit1;
+    private javax.swing.JLabel lblMargeCredit2;
     private javax.swing.JPanel tabDepot;
     private javax.swing.JPanel tabPaiement;
     private javax.swing.JPanel tabRetrait;

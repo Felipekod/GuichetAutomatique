@@ -49,7 +49,7 @@ public class Login extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         lclNIPClient = new javax.swing.JLabel();
-        txtNIPClient = new javax.swing.JTextField();
+        txtNIPClient = new javax.swing.JPasswordField();
         jPanel3 = new javax.swing.JPanel();
         lclCodeClient1 = new javax.swing.JLabel();
         txtCodeClient1 = new javax.swing.JTextField();
@@ -69,7 +69,6 @@ public class Login extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login");
         setBackground(new java.awt.Color(102, 255, 0));
-        setPreferredSize(new java.awt.Dimension(1280, 720));
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(248, 248, 248));
@@ -81,14 +80,15 @@ public class Login extends javax.swing.JFrame {
         lclNIPClient.setText("NIP");
 
         txtNIPClient.setBackground(new java.awt.Color(227, 227, 227));
-        txtNIPClient.setFont(new java.awt.Font("Lucida Grande", 0, 36)); // NOI18N
-        txtNIPClient.setForeground(new java.awt.Color(102, 102, 102));
         txtNIPClient.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtNIPClient.setText("00000");
-        txtNIPClient.setToolTipText("00000");
+        txtNIPClient.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtNIPClientFocusGained(evt);
+            }
+        });
         txtNIPClient.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                codeNIPClicked(evt);
+                txtNIPClientMouseClicked(evt);
             }
         });
 
@@ -97,19 +97,20 @@ public class Login extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(txtNIPClient, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lclNIPClient, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addComponent(lclNIPClient, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(56, 56, 56)
+                        .addComponent(txtNIPClient, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(16, Short.MAX_VALUE)
-                .addComponent(txtNIPClient, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addComponent(txtNIPClient, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lclNIPClient, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -346,8 +347,10 @@ public class Login extends javax.swing.JFrame {
             String btnClique = evt.getActionCommand();
             //On recupere la valeur du txtCodeClient plus le numero choisi
             String txtCodeNIP = txtNIPClient.getText() + btnClique;
-            //On retire les dernies 6 caractères.
-            String txtAAfficher = txtCodeNIP.substring(txtCodeNIP.length() - 4);
+            String txtAAfficher = txtCodeNIP;
+            //On retire les dernies 4 caractères.
+            if(txtCodeNIP.length() > 4)
+            txtAAfficher = txtCodeNIP.substring(txtCodeNIP.length() - 4);
             //On affiche à l'ecran
             txtNIPClient.setText(txtAAfficher);
         }
@@ -361,10 +364,6 @@ public class Login extends javax.swing.JFrame {
     private void codeClientClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_codeClientClicked
         clavierNumeriqueDestin = CLAVIER_NUMERIQUE_CODECLIENT;
     }//GEN-LAST:event_codeClientClicked
-
-    private void codeNIPClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_codeNIPClicked
-        clavierNumeriqueDestin = CLAVIER_NUMERIQUE_CODENIP;
-    }//GEN-LAST:event_codeNIPClicked
 
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
         codeClientSaisi = txtCodeClient1.getText();
@@ -423,6 +422,14 @@ public class Login extends javax.swing.JFrame {
         }         
     }//GEN-LAST:event_btnOkActionPerformed
 
+    private void txtNIPClientMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtNIPClientMouseClicked
+        clavierNumeriqueDestin = CLAVIER_NUMERIQUE_CODENIP;
+    }//GEN-LAST:event_txtNIPClientMouseClicked
+
+    private void txtNIPClientFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNIPClientFocusGained
+        clavierNumeriqueDestin = CLAVIER_NUMERIQUE_CODENIP;
+    }//GEN-LAST:event_txtNIPClientFocusGained
+
     /**
      * @param args the command line arguments
      */
@@ -478,6 +485,6 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel lclCodeClient1;
     private javax.swing.JLabel lclNIPClient;
     private javax.swing.JTextField txtCodeClient1;
-    private javax.swing.JTextField txtNIPClient;
+    private javax.swing.JPasswordField txtNIPClient;
     // End of variables declaration//GEN-END:variables
 }

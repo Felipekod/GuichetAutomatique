@@ -6,6 +6,7 @@
 package ca.com.felipeoliveira.model;
 
 import ca.com.felipeoliveira.viewmodel.Frames;
+import ca.com.felipeoliveira.viewmodel.GererBD;
 import javax.swing.JFrame;
 
 /**
@@ -37,6 +38,14 @@ public class MargeDeCredit extends Compte {
         else 
             success = false;
             return success;
+    }
+    
+    public boolean interetCredit(GererBD gererBD){
+        boolean succes = true;
+        double interet = this.solde * 0.05;
+        this.solde += interet;
+        succes = gererBD.enregistrerSolde(this.numero, this.solde);
+        return succes;
     }
     
     public boolean retraitMargeCredit(double valeur){

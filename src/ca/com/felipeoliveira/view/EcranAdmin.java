@@ -14,6 +14,7 @@ import ca.com.felipeoliveira.model.Transaction;
 import ca.com.felipeoliveira.viewmodel.ConnexionSQLite;
 import ca.com.felipeoliveira.viewmodel.Frames;
 import ca.com.felipeoliveira.viewmodel.GererBD;
+import ca.com.felipeoliveira.viewmodel.GererEntrees;
 import ca.com.felipeoliveira.viewmodel.Guichet;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,6 +35,7 @@ public class EcranAdmin extends javax.swing.JFrame {
     
     List<CompteCheque> cheques = new ArrayList();
     List<CompteCheque> chequesBanque;
+    List<MargeDeCredit> creditsBanque; 
     List<CompteEpargne> epargnes = new ArrayList();
     List<CompteHypothecaire> hypothecaires = new ArrayList();
     List<Transaction> transactions;
@@ -46,6 +48,7 @@ public class EcranAdmin extends javax.swing.JFrame {
     Guichet guichet;
     Client client;
     Frames frame = new Frames();
+    GererEntrees entree = new GererEntrees();
     /**
      * Creates new form EcranAdmin
      */
@@ -73,8 +76,6 @@ public class EcranAdmin extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
-        lblNvClientNumero = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         lblPrenomC = new javax.swing.JLabel();
         lblNomC = new javax.swing.JLabel();
@@ -121,7 +122,7 @@ public class EcranAdmin extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         btnAjouterArgent = new javax.swing.JButton();
         btnInteret = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnTauxCredit = new javax.swing.JButton();
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
@@ -136,27 +137,6 @@ public class EcranAdmin extends javax.swing.JFrame {
         jTabbedPane1.setBackground(new java.awt.Color(255, 255, 196));
 
         jPanel2.setBackground(new java.awt.Color(253, 253, 195));
-
-        lblNvClientNumero.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
-        lblNvClientNumero.setForeground(new java.awt.Color(102, 102, 102));
-        lblNvClientNumero.setText("Code client: 000000");
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(308, Short.MAX_VALUE)
-                .addComponent(lblNvClientNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(270, 270, 270))
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(32, Short.MAX_VALUE)
-                .addComponent(lblNvClientNumero)
-                .addGap(28, 28, 28))
-        );
 
         lblPrenomC.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         lblPrenomC.setForeground(new java.awt.Color(102, 102, 102));
@@ -232,23 +212,17 @@ public class EcranAdmin extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(63, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(176, 176, 176)
-                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(20, 20, 20))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(238, 238, 238)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(269, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, Short.MAX_VALUE)
+                .addGap(93, 93, 93)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28))
+                .addContainerGap(154, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("CREER CLIENT", jPanel2);
@@ -589,7 +563,12 @@ public class EcranAdmin extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("CHARGER INTÉRÊT AUX CREDITS");
+        btnTauxCredit.setText("CHARGER INTÉRÊT AUX CREDITS");
+        btnTauxCredit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTauxCreditActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -600,7 +579,7 @@ public class EcranAdmin extends javax.swing.JFrame {
                 .addComponent(btnAjouterArgent, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(86, 86, 86)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnTauxCredit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnInteret, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE))
                 .addContainerGap(136, Short.MAX_VALUE))
         );
@@ -612,7 +591,7 @@ public class EcranAdmin extends javax.swing.JFrame {
                     .addComponent(btnInteret, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
                     .addComponent(btnAjouterArgent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(94, 94, 94)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnTauxCredit, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(172, Short.MAX_VALUE))
         );
 
@@ -650,18 +629,26 @@ public class EcranAdmin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAjouterClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAjouterClientActionPerformed
-        //TODO verificar entradas
+        //On recupère les entrées
         String nomNvClient = txtNomNvClient.getText();
         String prenomNvClient = txtPrenomNvClient.getText();
         String telNvClient = txtTelNvClient.getText();
         String nipNvClient = txtNIPNvClient.getText();
         String codeNvClient = gererBD.recupererNumeroClient();
         
-        boolean succes = gererBD.insererClient(codeNvClient, nomNvClient, prenomNvClient, telNvClient, nipNvClient);
-        if(succes){
-            succes = gererBD.insererCompte(codeNvClient, 1);
-        }
+        //On verifie la validité
+        boolean nomValide = entree.isFullname(nomNvClient);
+        boolean prenomValide = entree.isFullname(prenomNvClient);
+        boolean telValide = entree.isTelFifteenChars(telNvClient);
+        boolean nipValide = (entree.isFourDigits(nipNvClient) && entree.isInt(nipNvClient));
         
+        if(nomValide && prenomValide && telValide && nipValide){
+            boolean succes = gererBD.insererClient(codeNvClient, nomNvClient, prenomNvClient, telNvClient, nipNvClient);
+            if(succes){
+                succes = gererBD.insererCompte(codeNvClient, 1);
+                frame.compteClientCree(codeNvClient);
+            }
+        }
     }//GEN-LAST:event_btnAjouterClientActionPerformed
 
     private void btnChercherClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChercherClientActionPerformed
@@ -694,9 +681,8 @@ public class EcranAdmin extends javax.swing.JFrame {
             else {
                 txtLimite.setEnabled(false);
             }
-            
             //On set le status de la compte
-            if(client.getEsssaieLogin() < 4)
+            if(client.getEsssaieLogin() < 3)
                 btnClientStatus.setText("CLIENT ACTIF");
             else
                 btnClientStatus.setText("CLIENT BLOQUÉ");
@@ -712,7 +698,7 @@ public class EcranAdmin extends javax.swing.JFrame {
             btnCreerCompte.setEnabled(false);
             btnPrelevementHypothecaire.setEnabled(false);
             listTransactions.setEnabled(false);
-            
+            frame.clientNomTrouve();
         }
     }//GEN-LAST:event_btnChercherClientActionPerformed
 
@@ -802,6 +788,8 @@ public class EcranAdmin extends javax.swing.JFrame {
         for(int i = 0; i < chequesSize; i++){
             chequesBanque.get(i).payerInteret(gererBD);
         }  
+        //On avise l'adm.
+        frame.interetComptesCheques();
     }//GEN-LAST:event_btnInteretActionPerformed
 
     private void btnAjouterArgentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAjouterArgentActionPerformed
@@ -825,6 +813,18 @@ public class EcranAdmin extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_btnClientStatusActionPerformed
+
+    private void btnTauxCreditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTauxCreditActionPerformed
+        //On recupère les comptes credit
+        creditsBanque = gererBD.retournerListCredit();
+        int creditsSize = creditsBanque.size();
+        //On aplique la taux de 5%
+        for(int i = 0; i < creditsSize; i++){
+            creditsBanque.get(i).interetCredit(gererBD);
+        } 
+        //On avise l'adm
+        frame.interetCredit();
+    }//GEN-LAST:event_btnTauxCreditActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1003,9 +1003,9 @@ public class EcranAdmin extends javax.swing.JFrame {
     private javax.swing.JButton btnInteret;
     private javax.swing.JButton btnModifierLimite;
     private javax.swing.JButton btnPrelevementHypothecaire;
+    private javax.swing.JButton btnTauxCredit;
     private javax.swing.JComboBox<String> cbHypothecaires;
     private javax.swing.JComboBox<String> cbTypeCompteCreer;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1027,7 +1027,6 @@ public class EcranAdmin extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
@@ -1039,7 +1038,6 @@ public class EcranAdmin extends javax.swing.JFrame {
     private javax.swing.JLabel lblLimite;
     private javax.swing.JLabel lblNomC;
     private javax.swing.JLabel lblNomPrenomClient;
-    private javax.swing.JLabel lblNvClientNumero;
     private javax.swing.JLabel lblPrenomC;
     private javax.swing.JLabel lblTelephoneClient;
     private javax.swing.JList<String> listTransactions;
