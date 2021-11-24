@@ -33,7 +33,7 @@ public class ConnexionSQLite {
             return false;
         }
         
-        System.out.println("deucerto");
+        System.out.println("It works");
         return true;
     }
     

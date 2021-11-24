@@ -24,10 +24,10 @@ public class GuichetAutomatique {
         GererBD gererBD = new GererBD(connexion);
         
         //Cree la table tbl_clients si elle n'existe pas
-        gererBD.creerTableClient();
-        gererBD.creerTableComptes();
-        gererBD.creerTableTransaction();
-        gererBD.creerTableGuichet();
+        //gererBD.creerTableClient();
+        //gererBD.creerTableComptes();
+        //gererBD.creerTableTransaction();
+        //gererBD.creerTableGuichet();
         
 
         //utiliser les methodes de la classe ReplirBD pour faire des tests

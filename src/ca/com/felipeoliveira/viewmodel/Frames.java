@@ -61,7 +61,7 @@ public class Frames {
     
     public void compteClientCree(String compte){
         JOptionPane.showMessageDialog(frame,
-        "Client :" + compte + " créé" );
+        "Client: " + compte + " créé" );
     }
     
     public void nomNonValide(){

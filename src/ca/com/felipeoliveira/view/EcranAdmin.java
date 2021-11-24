@@ -647,6 +647,11 @@ public class EcranAdmin extends javax.swing.JFrame {
             if(succes){
                 succes = gererBD.insererCompte(codeNvClient, 1);
                 frame.compteClientCree(codeNvClient);
+                //On vide les champs txt
+                txtNomNvClient.setText("");
+                txtPrenomNvClient.setText("");
+                txtTelNvClient.setText("");
+                txtNIPNvClient.setText("");
             }
         }
     }//GEN-LAST:event_btnAjouterClientActionPerformed
