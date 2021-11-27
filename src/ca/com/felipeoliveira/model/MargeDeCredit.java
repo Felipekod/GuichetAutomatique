@@ -15,7 +15,7 @@ import javax.swing.JFrame;
  */
 public class MargeDeCredit extends Compte {
 
-    private double limite = 1000;
+    private double limite;
     Frames frame = new Frames();
     
     public MargeDeCredit(String numero, String codeTitulaire){

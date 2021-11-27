@@ -32,9 +32,9 @@ public class CompteHypothecaire extends Compte{
         boolean utiliseCredit = false;
         if(valeur - this.solde <= 0){
             this.solde -= valeur; 
-            succes = gererBD.enregistrerSolde(credit.getNumero(), this.solde);
+            succes = gererBD.enregistrerSolde(this.getNumero(), this.solde);
         }
-        //Si la laveur de retrait n'est pas sufisant on verifie si le client a de credit
+        //Si la valeur de retrait n'est pas sufisant on verifie si le client a de credit
         else{
             if(credit != null){
                 //On verifie la valeur moins ce que devrait rester dans la compte
